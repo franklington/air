@@ -16,14 +16,12 @@
 
 ### Build dependencies
 
-1. Install Python 3 via Homebrew: `brew install python@3.13`
-1. Install Python dependencies via `pip3`: `pip3 install httplib2==0.22.0 requests pillow`
+1. Install package dependencies via Homebrew:
+   `brew install python@3.13 wget zstd coreutils readline`
+1. Install Python dependencies via `pip3`: `pip3 install requests pillow`
     * Note that you might need to use `--break-system-packages` if you don't want to use a
       dedicated Python environment for building Helium.
 1. Install Metal toolchain: `xcodebuild -downloadComponent MetalToolchain`
-1. Install Ninja via Homebrew: `brew install ninja`
-1. Install wget via Homebrew: `brew install wget`
-1. Install GNU coreutils and readline via Homebrew: `brew install coreutils readline`
 1. Unlink binutils to use the one provided with Xcode: `brew unlink binutils`
 1. Restart your terminal.
 
@@ -37,7 +35,7 @@ If you want to notarize the build, you need to have an Apple Developer ID and a 
 - `PROD_MACOS_NOTARIZATION_APPLE_ID`: The email you used to register your Apple Account and Apple Developer Program
 - `PROD_MACOS_NOTARIZATION_TEAM_ID`: Your Apple Developer Team ID, which can be found in the Apple Developer membership page
 - `PROD_MACOS_NOTARIZATION_PWD`: An app-specific password generated in the Apple ID account settings
-- `PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_PATH`: Path to the provisioning profile that allows you to use entitlements which need to be specifically approved by Apple (`com.apple.developer.web-browser.public-key-credential`, `com.apple.developer.associated-domains.applinks.read-write`).
+- `PROD_MACOS_SPECIAL_ENTITLEMENTS_PROFILE_PATH`: Path to the provisioning profile that allows you to use entitlements which need to be specifically approved by Apple.
 
 If you don't have an Apple Developer ID to sign the build (or you don't want to sign it), you can simply not specify MACOS_CERTIFICATE_NAME.
 
@@ -59,6 +57,8 @@ or, if you want to build for x86_64 on an Apple Silicon Mac:
 ```sh
 ./build.sh x86_64
 ```
+
+Use `./build.sh -c` to clone Chromium instead of downloading prepared archives.
 
 Once it's complete, a `.dmg` should appear in `build/`.
 
@@ -88,6 +88,8 @@ brew install quilt
     ```sh
     he setup
     ```
+
+   Use `he setup -c` to clone Chromium instead of downloading prepared archives.
 
 3. Build your first development binary:
     ```sh
