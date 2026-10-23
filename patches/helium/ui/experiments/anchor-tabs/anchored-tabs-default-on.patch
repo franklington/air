@@ -1,6 +1,8 @@
+diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
+index 90cedf2..363188e 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -36,8 +36,9 @@ bool IsHeliumAnchoredTabsStartupModeEnab
+@@ -48,8 +48,9 @@ bool IsHeliumAnchoredTabsStartupModeEnabled() {
      return false;
    }
  

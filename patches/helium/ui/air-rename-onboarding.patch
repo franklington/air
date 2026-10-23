@@ -1,8 +1,8 @@
-Index: src/chrome/app/settings_strings.grdp
-===================================================================
---- src.orig/chrome/app/settings_strings.grdp
-+++ src/chrome/app/settings_strings.grdp
-@@ -1352,7 +1352,7 @@
+diff --git a/chrome/app/settings_strings.grdp b/chrome/app/settings_strings.grdp
+index 050264b..44e2515 100644
+--- a/chrome/app/settings_strings.grdp
++++ b/chrome/app/settings_strings.grdp
+@@ -1416,7 +1416,7 @@
            Please check with your network administrator to make sure that the firewall is not blocking downloads from Google servers.
          </message>
          <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED_HELP_HELIUM" desc="Error message when spell dictionary download fails more than once possibly due to a network policy or configuration.">
@@ -11,7 +11,7 @@ Index: src/chrome/app/settings_strings.grdp
          </message>
        </if>
      </if>
-@@ -1773,13 +1773,13 @@
+@@ -1667,10 +1667,10 @@
  
      <!-- Helium Services Privacy Settings (helium://settings/privacy/services) -->
      <message name="IDS_SETTINGS_HELIUM_SERVICES" desc="Name of the page which controls connectivity to Helium services">
@@ -22,13 +22,18 @@ Index: src/chrome/app/settings_strings.grdp
 -      Manage what Helium services are allowed in your browser
 +      Manage what Air services are allowed in your browser
      </message>
+     <message name="IDS_SETTINGS_HELIUM_CRASH_REPORTING_TITLE" desc="Title of the setting that controls crash reporting">
+       Crash reporting
+@@ -1688,7 +1688,7 @@
+       Send automatically
+     </message>
      <message name="IDS_SETTINGS_HELIUM_SCHEMA_NOTICE_TITLE" desc="Title of the alert shown when Helium services have a change in behavior">
 -      Updates to Helium services:
 +      Updates to Air services:
      </message>
      <message name="IDS_SETTINGS_HELIUM_SCHEMA_NOTICE_DESCRIPTION" desc="Description of the alert shown when Helium services have a change in behavior">
        These changes are not active until you dismiss this notice.
-@@ -1788,65 +1788,65 @@
+@@ -1697,41 +1697,41 @@
        Don't notify me again
      </message>
      <message name="IDS_SETTINGS_HELIUM_SERVICES_SETUP_PENDING_TEXT" desc="Description shown in services settings when user has not completed onboarding">
@@ -67,19 +72,22 @@ Index: src/chrome/app/settings_strings.grdp
 -      Helium will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.
 +      Air will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.
      </message>
-     <message name="IDS_SETTINGS_HELIUM_SERVICES_UPDATE" desc="Toggle for automatic update downloads">
-       Allow automatic browser and component updates
-     </message>
-     <if expr="is_macosx">
+     <if expr="not is_linux">
+       <message name="IDS_SETTINGS_HELIUM_SERVICES_UPDATE" desc="Toggle for automatic update downloads">
+         Allow automatic browser updates
+       </message>
        <message name="IDS_SETTINGS_HELIUM_SERVICES_UPDATE_DESCRIPTION" desc="Description of the toggle for automatic update downloads">
--        Helium will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
-+        Air will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
+-        Helium will automatically check for updates and install them. This includes browser and component updates. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
++        Air will automatically check for updates and install them. This includes browser and component updates. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
        </message>
      </if>
-     <if expr="not is_macosx">
+     <if expr="is_linux">
+@@ -1739,26 +1739,26 @@
+         Allow automatic component updates
+       </message>
        <message name="IDS_SETTINGS_HELIUM_SERVICES_UPDATE_DESCRIPTION" desc="Description of the toggle for automatic update downloads">
--        Helium will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates. Automatic core browser updates are not available on this platform yet, but component updates are. Please use external software to keep Helium up to date.
-+        Air will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates. Automatic core browser updates are not available on this platform yet, but component updates are. Please use external software to keep Air up to date.
+-        Helium will automatically check for component updates and install them. We recommend keeping this setting enabled. On Linux, browser updates are handled by your distro's package manager. Please check for Helium package updates at least every week.
++        Air will automatically check for component updates and install them. We recommend keeping this setting enabled. On Linux, browser updates are handled by your distro's package manager. Please check for Air package updates at least every week.
        </message>
      </if>
      <message name="IDS_SETTINGS_HELIUM_SERVICES_UBO" desc="Description of the toggle for uBO filter lists">
@@ -106,19 +114,197 @@ Index: src/chrome/app/settings_strings.grdp
      </message>
      <message name="IDS_SETTINGS_HELIUM_SERVICES_OVERRIDE_INVALID_ORIGIN" desc="Validation error shown when the custom Helium services origin is invalid.">
        Invalid origin
-@@ -2086,7 +2086,7 @@
-       Enabling "Do Not Track" means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted. For example, some websites may respond to this request by showing you ads that aren't based on other websites you've visited. Many websites will still collect and use your browsing data - for example to improve security, to provide content, services, ads and recommendations on their websites, and to generate reporting statistics.
-     </message>
-     <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_TEXT_HELIUM" desc="The text of a confirmation dialog that confirms that the user want to send the 'Do Not Track' header">
--      Enabling "Do Not Track" means that Helium will include a request not to be tracked with your browsing traffic. Whether this request is honored depends on whether a website responds to it and on how it is interpreted. For example, some websites may respond by showing you ads that aren't personalized using your previous browsing data. Many websites may still track you regardless of the request.
-+      Enabling "Do Not Track" means that Air will include a request not to be tracked with your browsing traffic. Whether this request is honored depends on whether a website responds to it and on how it is interpreted. For example, some websites may respond by showing you ads that aren't personalized using your previous browsing data. Many websites may still track you regardless of the request.
-     </message>
-     <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_LEARN_MORE_ACCESSIBILITY_LABEL" desc="The accessibility label for a link to learn more about Do Not Track">
-       Learn more about Do Not Track
-Index: src/components/helium_onboarding/index.html
-===================================================================
---- src.orig/components/helium_onboarding/index.html
-+++ src/components/helium_onboarding/index.html
+diff --git a/components/helium_onboarding/helium_onboarding_strings.grdp b/components/helium_onboarding/helium_onboarding_strings.grdp
+index 2402eb9..0861dd9 100644
+--- a/components/helium_onboarding/helium_onboarding_strings.grdp
++++ b/components/helium_onboarding/helium_onboarding_strings.grdp
+@@ -1,7 +1,7 @@
+ <grit-part>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_PAGE_TITLE" desc="The title of the Helium setup onboarding page.">
+-  Helium Setup
++  Air Setup
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_BUTTON_USE_DEFAULTS" desc="Button label that skips detailed setup and applies the default onboarding choices.">
+@@ -21,85 +21,85 @@
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_PARTNER_TITLE" desc="Badge title shown for partner services in onboarding.">
+-  Helium Partner
++  Air Partner
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_PARTNER_TOOLTIP" desc="Tooltip explaining why a listed service is marked as a Helium partner.">
+-  Paying for this service will support the development of Helium.
++  Paying for this service will support the development of Air.
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_WELCOME_GREETING" desc="Main greeting on the first onboarding screen.">
+-  Meet Helium
++  Meet Air
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_WELCOME_BODY" desc="Introductory body text on the first onboarding screen.">
+-  Configure Helium to match your taste and import data from other browsers. Make it feel like home or jump straight to browsing.
++  Configure Air to match your taste and import data from other browsers. Make it feel like home or jump straight to browsing.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_WELCOME_TERMS" desc="Legal note shown during onboarding. Keep each BEGIN/END placeholder pair around its corresponding link text, but move the pairs as needed for a natural translation.">
+   By continuing, you agree to the <ph name="BEGIN_LINK_PRIVACY">$1</ph>privacy policy<ph name="END_LINK_PRIVACY">$2</ph> and <ph name="BEGIN_LINK_TERMS">$3</ph>terms of use<ph name="END_LINK_TERMS">$4</ph>.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_WELCOME_FOOTER" desc="Footer text explaining that setup can be skipped but Helium services require consent.">
+-  If you use defaults, Helium services will be automatically enabled.
++  If you use defaults, Air services will be automatically enabled.
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_FINISH_TITLE" desc="Title on the final onboarding screen.">
+   Ready to browse?
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_FINISH_BODY" desc="Body text on the final onboarding screen.">
+-  The setup is complete, thank you for choosing Helium. Time to enjoy the internet again.
++  The setup is complete, thank you for choosing Air. Time to enjoy the internet again.
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_TITLE" desc="Title of the onboarding screen for Helium services consent.">
+-  Helium services
++  Air services
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_SUBTITLE" desc="Subtitle explaining when Helium services consent choices take effect.">
+   Services are not active until you consent to using them. Changes will be applied after you go to the next page.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_CONNECTION_TITLE" desc="Title of the global toggle for connecting to Helium services.">
+-  Allow connecting to Helium services
++  Allow connecting to Air services
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_CONNECTION_DESC" desc="Description of the global Helium services toggle.">
+-  Helium services provide additional functionality, such as: extension downloads, native !bangs, filter list updates, and browser updates. When disabled, none of these features will work, but Helium will not make any web requests.
++  Air services provide additional functionality, such as: extension downloads, native !bangs, filter list updates, and browser updates. When disabled, none of these features will work, but Air will not make any web requests.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_BANGS_TITLE" desc="Title of the toggle for downloading the Helium bangs list.">
+   Allow downloading the !bangs list
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_BANGS_DESC" desc="Description of the toggle for downloading the Helium bangs list.">
+-  Helium will fetch a list of bangs that help you browse the Internet faster, such as !w or !gh. When disabled, bangs will not work.
++  Air will fetch a list of bangs that help you browse the Internet faster, such as !w or !gh. When disabled, bangs will not work.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_EXTENSIONS_TITLE" desc="Title of the toggle for proxying extension downloads and updates.">
+   Proxy extension downloads and updates
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_EXTENSIONS_DESC" desc="Description of the toggle for proxying extension downloads and updates.">
+-  When enabled, Helium will proxy extension downloads and updates to protect your privacy. When disabled, downloading and updating extensions will not work.
++  When enabled, Air will proxy extension downloads and updates to protect your privacy. When disabled, downloading and updating extensions will not work.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_UBLOCK_TITLE" desc="Title of the toggle for downloading uBlock Origin filter lists.">
+   Allow downloading filter lists for uBlock Origin
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_UBLOCK_DESC" desc="Description of the toggle for downloading uBlock Origin filter lists.">
+-  Helium will fetch fresh filter lists for uBlock Origin. All requests to lists are proxied to protect your privacy. When disabled, default filter lists will be loaded from local storage, which are only updated along with Helium. Optional filter lists will be requested without proxying.
++  Air will fetch fresh filter lists for uBlock Origin. All requests to lists are proxied to protect your privacy. When disabled, default filter lists will be loaded from local storage, which are only updated along with Air. Optional filter lists will be requested without proxying.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_AUTOUPDATES_TITLE" desc="Title of the toggle for automatic browser updates on platforms where Helium updates the browser.">
+   Allow automatic browser updates
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_AUTOUPDATES_DESC" desc="Description of the toggle for automatic browser updates on platforms where Helium updates the browser.">
+-  Helium will automatically check for updates and install them. This includes browser and component updates. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
++  Air will automatically check for updates and install them. This includes browser and component updates. We recommend keeping this setting enabled to ensure you get the latest features and security updates.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_AUTOUPDATES_TITLE_LINUX" desc="Title of the toggle for automatic component updates on Linux.">
+   Allow automatic component updates
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_AUTOUPDATES_DESC_LINUX" desc="Description of the toggle for automatic component updates on Linux.">
+-  Helium will automatically check for component updates and install them. We recommend keeping this setting enabled. On Linux, browser updates are handled by your distro's package manager. Please check for Helium package updates at least every week.
++  Air will automatically check for component updates and install them. We recommend keeping this setting enabled. On Linux, browser updates are handled by your distro's package manager. Please check for Air package updates at least every week.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_SPELLCHECK_TITLE" desc="Title of the toggle for downloading spell check dictionary files.">
+   Allow downloading dictionary files for spell checking
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_SPELLCHECK_DESC" desc="Description of the toggle for downloading spell check dictionary files.">
+-  Helium will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.
++  Air will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_INSTANCE_TITLE" desc="Title of the option describing custom Helium services instances.">
+-  Use your own instance of Helium services
++  Use your own instance of Air services
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SERVICES_INSTANCE_DESC" desc="Description of the option describing custom Helium services instances.">
+-  You can host your own instance of Helium services and use it in your browser instead of the pre-hosted server. If you have one, you can set it in Helium settings.
++  You can host your own instance of Air services and use it in your browser instead of the pre-hosted server. If you have one, you can set it in Air settings.
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_SEARCH_TITLE" desc="Title of the onboarding screen for selecting a default search engine.">
+@@ -118,7 +118,7 @@
+   A mainstream search engine which collects extensive personal data.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SEARCH_CATEGORIES_CUSTOM" desc="Description for a custom search engine in onboarding.">
+-  A custom search engine. Its privacy wasn't verified by Helium.
++  A custom search engine. Its privacy wasn't verified by Air.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_SEARCH_ENGINES_DUCKDUCKGO" desc="Onboarding description of DuckDuckGo as a search engine option.">
+   Privacy-focused. Relies on Bing for results. Promises not to track or profile you.
+@@ -146,10 +146,10 @@
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_DEFAULT_BROWSER_TITLE" desc="Title of the onboarding screen asking whether Helium should be the default browser.">
+-  Ready to switch to Helium?
++  Ready to switch to Air?
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DEFAULT_BROWSER_SUBTITLE" desc="Subtitle of the onboarding screen asking whether Helium should be the default browser.">
+-  Better privacy, speed, and comfort. All in one click. Wanna make links open in Helium by default?
++  Better privacy, speed, and comfort. All in one click. Wanna make links open in Air by default?
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DEFAULT_BROWSER_YES" desc="Label for the option to make Helium the default browser.">
+   Yes
+@@ -158,10 +158,10 @@
+   No
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DEFAULT_BROWSER_YES_DESC" desc="Description for the option to make Helium the default browser.">
+-  Make Helium my default browser.
++  Make Air my default browser.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DEFAULT_BROWSER_NO_DESC" desc="Description for the option to keep the current default browser.">
+-  Just trying Helium for now.
++  Just trying Air for now.
+ </message>
+ 
+ <message name="IDS_HELIUM_ONBOARDING_DATA_IMPORT_TITLE" desc="Title of the onboarding screen for importing browser data.">
+@@ -174,7 +174,7 @@
+   Find browsers to import from
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DATA_IMPORT_PROMPT_PERMISSION" desc="Explanation asking for permission to look for other browsers before choosing data to import.">
+-  Allow Helium to look for other browsers on this device so you can choose what to transfer.
++  Allow Air to look for other browsers on this device so you can choose what to transfer.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DATA_IMPORT_ALLOW" desc="Button that allows Helium to look for browsers to import data from.">
+   Allow
+@@ -192,7 +192,7 @@
+   Don't see your previous browser?
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DATA_IMPORT_MAC_NOTICE_BODY" desc="Explanation of macOS browser detection permissions. Keep the BEGIN/END placeholder pair around the System Settings link, but move it as needed for a natural translation.">
+-  macOS protects some browsers from being automatically detected. To see more options, allow Helium to access them in <ph name="BEGIN_LINK_SETTINGS">$1</ph>System Settings<ph name="END_LINK_SETTINGS">$2</ph>.
++  macOS protects some browsers from being automatically detected. To see more options, allow Air to access them in <ph name="BEGIN_LINK_SETTINGS">$1</ph>System Settings<ph name="END_LINK_SETTINGS">$2</ph>.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_DATA_IMPORT_BOOKMARKS" desc="Label for bookmarks as an importable data type.">
+   Bookmarks
+@@ -208,7 +208,7 @@
+   Password manager
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_PASSWORD_SUBTITLE" desc="Subtitle of the onboarding screen for choosing a password manager.">
+-  Helium doesn't have a built-in password manager. Would you like to install one from the Web Store?
++  Air doesn't have a built-in password manager. Would you like to install one from the Web Store?
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_PASSWORD_IMPORT_GUIDE" desc="Link label linking to a password manager import guide. Short title for a guide.">
+   Import
+@@ -236,7 +236,7 @@
+   Secure and the most popular open-source password manager. Offers data storage in Europe or US. Free with an optional paid plan. Can be self-hosted.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_PASSWORD_MANAGERS_ONE_PASSWORD" desc="Onboarding description of 1Password as a password manager option.">
+-  Popular, paid, and closed-source password manager. Offers data storage in Europe or US. May not work correctly with Helium without extra configuration.
++  Popular, paid, and closed-source password manager. Offers data storage in Europe or US. May not work correctly with Air without extra configuration.
+ </message>
+ <message name="IDS_HELIUM_ONBOARDING_PASSWORD_MANAGERS_DASHLANE" desc="Onboarding description of Dashlane as a password manager option.">
+   Popular, paid, and closed-source password manager. Stores data in Europe. Known for aggressive upselling tactics.
+diff --git a/components/helium_onboarding/index.html b/components/helium_onboarding/index.html
+index 326bffe..18687f8 100644
+--- a/components/helium_onboarding/index.html
++++ b/components/helium_onboarding/index.html
 @@ -5,7 +5,7 @@
      <meta charset="UTF-8" />
      <link rel="icon" type="image/png" href="/favicon.png" />
@@ -128,108 +314,3 @@ Index: src/components/helium_onboarding/index.html
  </head>
  
  <body>
-Index: src/components/helium_onboarding/src/lib/strings.ts
-===================================================================
---- src.orig/components/helium_onboarding/src/lib/strings.ts
-+++ src/components/helium_onboarding/src/lib/strings.ts
-@@ -9,48 +9,48 @@ export const s = {
-         letsGo: "Let's go!"
-     },
-     partner: {
--        title: "Helium Partner",
--        tooltip: "Paying for this service will support\nthe development of Helium."
-+        title: "Air Partner",
-+        tooltip: "Paying for this service will support\nthe development of Air."
-     },
-     welcome: {
--        greeting: "Meet Helium",
-+        greeting: "Meet Air",
-         body: "Configure your browser just the way you want it, or use\nthe default preset with best privacy and comfort.",
-         terms_note: "By continuing, you agree to the",
-         terms_privacy: "privacy policy",
-         terms_and: "and",
-         terms_use: "terms of use",
--        footer: "You can skip setup and come back later, but Helium services won't work without it.",
-+        footer: "You can skip setup and come back later, but Air services won't work without it.",
-     },
-     finish: {
-         title: "Ready to browse?",
--        body: "The setup is complete, thank you for choosing Helium.\nTime to enjoy the Internet again.",
-+        body: "The setup is complete, thank you for choosing Air.\nTime to enjoy the Internet again.",
-     },
-     services: {
--        title: "Helium services",
-+        title: "Air services",
-         subtitle: "Services are not active until you consent to using them.\nChanges will be applied after you go to the next page.",
- 
--        connection_title: "Allow connecting to Helium services",
--        connection_desc: "Helium services provide additional functionality, such as: extension downloads, native !bangs, filter list updates, and browser updates. When disabled, none of these features will work, but Helium will not make any web requests.",
-+        connection_title: "Allow connecting to Air services",
-+        connection_desc: "Air services provide additional functionality, such as: extension downloads, native !bangs, filter list updates, and browser updates. When disabled, none of these features will work, but Air will not make any web requests.",
- 
-         bangs_title: "Allow downloading the !bangs list",
--        bangs_desc: "Helium will fetch a list of bangs that help you browse the Internet faster, such as !w or !gh. When disabled, bangs will not work.",
-+        bangs_desc: "Air will fetch a list of bangs that help you browse the Internet faster, such as !w or !gh. When disabled, bangs will not work.",
- 
-         extensions_title: "Proxy extension downloads and updates",
--        extensions_desc: "When enabled, Helium will proxy extension downloads and updates to protect your privacy. When disabled, downloading and updating extensions will not work.",
-+        extensions_desc: "When enabled, Air will proxy extension downloads and updates to protect your privacy. When disabled, downloading and updating extensions will not work.",
- 
-         ublock_title: "Allow downloading filter lists for uBlock Origin",
--        ublock_desc: "Helium will fetch fresh filter lists for uBlock Origin. All requests to lists are proxied to protect your privacy. When disabled, default filter lists will be loaded from local storage, which are only updated along with Helium. Optional filter lists will be requested without proxying.",
-+        ublock_desc: "Air will fetch fresh filter lists for uBlock Origin. All requests to lists are proxied to protect your privacy. When disabled, default filter lists will be loaded from local storage, which are only updated along with Air. Optional filter lists will be requested without proxying.",
- 
-         autoupdates_title: "Allow automatic browser and component updates",
--        autoupdates_desc: "Helium will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates.",
--        autoupdates_linux: "\n\nAutomatic browser updates are not available on Linux yet, but component updates are. For now, please use external software to keep Helium's AppImage up-to-date. We already provide .zsync files along with releases.",
--        autoupdates_windows: "\n\nAutomatic browser updates are not available on Windows yet, but component updates are. For now, please use external software or install updates manually to keep Helium up-to-date.",
-+        autoupdates_desc: "Air will automatically download and install browser and component updates as they become available. We recommend keeping this setting enabled to ensure you get the latest features and security updates.",
-+        autoupdates_linux: "\n\nAutomatic browser updates are not available on Linux yet, but component updates are. For now, please use external software to keep Air's AppImage up-to-date. We already provide .zsync files along with releases.",
-+        autoupdates_windows: "\n\nAutomatic browser updates are not available on Windows yet, but component updates are. For now, please use external software or install updates manually to keep Air up-to-date.",
- 
-         spellcheck_title: "Allow downloading dictionary files for spell checking",
--        spellcheck_desc: "Helium will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.",
-+        spellcheck_desc: "Air will fetch dictionary files used for spell checking when requested. When disabled, spell checking will not work.",
- 
--        instance_title: "Use your own instance of Helium services",
--        instance_desc: "You can host your own instance of Helium services and use it in your browser instead of the pre-hosted server. If you have one, you can set it in Helium settings.",
-+        instance_title: "Use your own instance of Air services",
-+        instance_desc: "You can host your own instance of Air services and use it in your browser instead of the pre-hosted server. If you have one, you can set it in Air settings.",
-     },
-     search: {
-         title: "Default search engine",
-@@ -60,7 +60,7 @@ export const s = {
-         private: "A privacy-first search engine which\ndoesn't profile or track you.",
-         small: "Transparent, but not privacy-focused.\nOffers better privacy than mainstream\nsearch engines.",
-         mainstream: "A mainstream search engine which\ncollects extensive personal data.",
--        custom: "A custom search engine. Its privacy\nwasn't verified by Helium.",
-+        custom: "A custom search engine. Its privacy\nwasn't verified by Air.",
-     } satisfies Record<SearchCategory, string>,
-     searchEngines: {
-         duckduckgo: "Privacy-focused. Relies on Bing results but promises to never track or profile you.",
-@@ -71,12 +71,12 @@ export const s = {
-         google: "It's Google. It dominates the search market, collects extensive personal data, and profiles you."
-     } satisfies Record<SearchEngineName, string>,
-     defaultBrowser: {
--        title: "Ready to switch to Helium?",
--        subtitle: "Better privacy, speed, and comfort. All in one click.\nLet's make links open in Helium by default.",
-+        title: "Ready to switch to Air?",
-+        subtitle: "Better privacy, speed, and comfort. All in one click.\nLet's make links open in Air by default.",
-         yes: "Yes",
-         no: "No",
--        yes_desc: "Make Helium my default browser.",
--        no_desc: "Just trying Helium for now."
-+        yes_desc: "Make Air my default browser.",
-+        no_desc: "Just trying Air for now."
-     },
-     dataImport: {
-         title: "Take your stuff with you",
-@@ -87,7 +87,7 @@ export const s = {
-     },
-     password: {
-         title: "Password manager",
--        subtitle: "Helium doesn't have a built-in password manager, by design.\n Would you like to install a browser-agnostic one?",
-+        subtitle: "Air doesn't have a built-in password manager, by design.\n Would you like to install a browser-agnostic one?",
-         importGuide: "Import",
-         setupGuide: "Setup",
-         privacy: "Privacy",
