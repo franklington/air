@@ -1,8 +1,6 @@
-diff --git a/chrome/app/generated_resources.grd b/chrome/app/generated_resources.grd
-index 4f63662..0d8fd82 100644
 --- a/chrome/app/generated_resources.grd
 +++ b/chrome/app/generated_resources.grd
-@@ -12416,6 +12416,15 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
+@@ -12416,6 +12416,15 @@ Check your passwords anytime in <ph name
          <message name="IDS_TAB_CXMENU_COPY_URLS" desc="The label of the 'Copy URLs' Tab context menu item.">
            Copy URLs
          </message>
@@ -18,7 +16,7 @@ index 4f63662..0d8fd82 100644
          <message name="IDS_TAB_CXMENU_RENAMETAB" desc="The label of the 'Rename tab' context menu item and rename-tab dialog title.">
            Rename tab
          </message>
-@@ -12568,6 +12577,15 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
+@@ -12568,6 +12577,15 @@ Check your passwords anytime in <ph name
          <message name="IDS_TAB_CXMENU_COPY_URLS" desc="In Title Case: The label of the 'Copy URLs' Tab context menu item.">
            Copy URLs
          </message>
@@ -34,11 +32,9 @@ index 4f63662..0d8fd82 100644
          <message name="IDS_TAB_CXMENU_RENAMETAB" desc="In Title Case: The label of the 'Rename Tab' context menu item and rename-tab dialog title.">
            Rename Tab
          </message>
-diff --git a/chrome/browser/helium_flag_choices.h b/chrome/browser/helium_flag_choices.h
-index a1a13d5..5b1de60 100644
 --- a/chrome/browser/helium_flag_choices.h
 +++ b/chrome/browser/helium_flag_choices.h
-@@ -31,6 +31,7 @@ constexpr const char kUpdateServerUrlCommandLine[] = "custom-update-server-url";
+@@ -31,6 +31,7 @@ constexpr const char kUpdateServerUrlCom
  
  constexpr const char kMiddleClickAutoscrollCommandLine[] =
      "middle-click-autoscroll";
@@ -46,8 +42,6 @@ index a1a13d5..5b1de60 100644
  
  constexpr const char kHeliumNoiseCommandLine[] = "helium-noise";
  constexpr const char kHeliumNoiseCanvasCommandLine[] = "helium-noise-canvas";
-diff --git a/chrome/browser/helium_flag_entries.h b/chrome/browser/helium_flag_entries.h
-index 3d5c8d0..f98b31b 100644
 --- a/chrome/browser/helium_flag_entries.h
 +++ b/chrome/browser/helium_flag_entries.h
 @@ -27,6 +27,10 @@
@@ -61,8 +55,6 @@ index 3d5c8d0..f98b31b 100644
      {helium::kHeliumNoiseCommandLine, "Helium Noise",
       "Helium's anti-fingerprinting functionality. Adds insignificant noise to "
       "various features to deceive fingerprinting scripts. Enabled by default, "
-diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index b1f1708..08dc23f 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -15,6 +15,7 @@
@@ -89,7 +81,7 @@ index b1f1708..08dc23f 100644
  #include "extensions/browser/extension_registry.h"
  #include "extensions/common/extension_set.h"
  #include "ui/base/mojom/window_show_state.mojom.h"
-@@ -214,6 +217,18 @@ void RecordTabWindowDiff(Profile* profile,
+@@ -214,6 +217,18 @@ void RecordTabWindowDiff(Profile* profil
    prefs->ClearPref(prefs::kPreSmartRestartSessionState);
  }
  
@@ -108,7 +100,7 @@ index b1f1708..08dc23f 100644
  // Pointers to SessionRestoreImpls which are currently restoring the session.
  std::set<SessionRestoreImpl*>& GetActiveSessionRestorers() {
    static base::NoDestructor<std::set<SessionRestoreImpl*>> instance;
-@@ -497,7 +512,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -497,7 +512,7 @@ class SessionRestoreImpl : public Browse
        web_contents->GetController().LoadIfNecessary();
      }
  
@@ -117,7 +109,7 @@ index b1f1708..08dc23f 100644
  
      if (use_new_window) {
        browser->GetTabStripModel()->ActivateTabAt(
-@@ -1035,6 +1050,17 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1035,6 +1050,17 @@ class SessionRestoreImpl : public Browse
  
      const int selected_tab_index = std::clamp(
          window.selected_tab_index, 0, static_cast<int>(window.tabs.size() - 1));
@@ -135,7 +127,7 @@ index b1f1708..08dc23f 100644
  
  #if defined(USE_AURA)
      // Each restored tab's WebContents window is parented to the browser's
-@@ -1056,8 +1082,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1056,8 +1082,11 @@ class SessionRestoreImpl : public Browse
      // base::Time) can be mapped onto the TimeTicks timeline WebContents wants.
      const base::Time now = base::Time::Now();
      const base::TimeTicks now_ticks = base::TimeTicks::Now();
@@ -149,7 +141,7 @@ index b1f1708..08dc23f 100644
      auto restore_tab_at_index = [&](int source_index, int insertion_index,
                                      bool select) {
        const sessions::SessionTab& tab = *(window.tabs[source_index]);
-@@ -1084,6 +1113,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1084,6 +1113,11 @@ class SessionRestoreImpl : public Browse
        if (window.tabs[source_index]->navigations.empty()) {
          continue;
        }
@@ -161,7 +153,7 @@ index b1f1708..08dc23f 100644
        if (!restoring_into_empty_browser ||
            source_index != selected_tab_index) {
          restore_tab_at_index(source_index, next_insertion_index,
-@@ -1173,12 +1207,28 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1173,12 +1207,28 @@ class SessionRestoreImpl : public Browse
              : chrome::RestoredTabLoadPolicy::kDeferUntilActivation);
      DCHECK(web_contents);
  
@@ -177,8 +169,8 @@ index b1f1708..08dc23f 100644
 +      const int restored_index =
 +          browser->tab_strip_model()->GetIndexOfWebContents(web_contents);
 +      if (restored_index != TabStripModel::kNoTab) {
-+        browser->tab_strip_model()->UpdateWebContentsStateAt(
-+            restored_index, TabChangeType::kAll);
++        browser->tab_strip_model()->UpdateWebContentsState(
++            web_contents, TabChangeType::kAll);
 +      }
 +    }
  
@@ -192,7 +184,7 @@ index b1f1708..08dc23f 100644
  
      if (tab.split_id) {
        // add tab to tabs_by_split_id.
-@@ -1262,8 +1312,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1262,8 +1312,11 @@ class SessionRestoreImpl : public Browse
  
      for (const std::unique_ptr<sessions::SessionTabGroup>& session_tab_group :
           tab_groups) {
@@ -206,8 +198,6 @@ index b1f1708..08dc23f 100644
        if (session_tab_group->saved_guid) {
          // We add this mapping to ensure the call to
          // TabStripModel::ChangeTabGroupVisuals results in writing the saved
-diff --git a/chrome/browser/sessions/session_service.cc b/chrome/browser/sessions/session_service.cc
-index 0175af6..40f765c 100644
 --- a/chrome/browser/sessions/session_service.cc
 +++ b/chrome/browser/sessions/session_service.cc
 @@ -7,6 +7,7 @@
@@ -247,7 +237,7 @@ index 0175af6..40f765c 100644
  #include "content/public/browser/navigation_details.h"
  #include "content/public/browser/navigation_entry.h"
  #include "content/public/browser/session_storage_namespace_handle.h"
-@@ -685,15 +684,11 @@ void SessionService::BuildCommandsForTab(
+@@ -685,15 +684,11 @@ void SessionService::BuildCommandsForTab
          sessions::CreateSplitTabCommand(session_id, std::move(split)));
    }
  
@@ -268,8 +258,6 @@ index 0175af6..40f765c 100644
    }
  }
  
-diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 1c803d1..ccde1fd 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -3561,6 +3561,8 @@ static_library("ui") {
@@ -281,8 +269,6 @@ index 1c803d1..ccde1fd 100644
        "views/helium/tab_rename_dialog.cc",
        "views/helium/tab_rename_dialog.h",
      ]
-diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 627e1a5..b2d7da0 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -89,6 +89,7 @@
@@ -293,12 +279,13 @@ index 627e1a5..b2d7da0 100644
  #include "chrome/browser/ui/helium/helium_layout_state_controller.h"
  #include "chrome/browser/ui/intent_picker_tab_helper.h"
  #include "chrome/browser/ui/lens/lens_search_controller.h"
-@@ -1485,6 +1486,12 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1485,6 +1486,13 @@ void CloseTab(BrowserWindowInterface* br
      return;
    }
  
 +  if (TabStripModel* const model = browser->GetTabStripModel();
-+      model->selection_model().size() == 1 && !model->IsActiveTabSplit() &&
++      model->selection_model().size() == 1 &&
++      !model->GetSplitForTab(model->active_index()).has_value() &&
 +      helium::MaybeHibernateAnchoredTab(model, model->active_index())) {
 +    return;
 +  }
@@ -306,8 +293,6 @@ index 627e1a5..b2d7da0 100644
    // If the selection model consists of only the indices of a single split tab,
    // decide if just the active tab in the split is closed instead of all tabs in
    // the split.
-diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
-index 6a4b513..711fa24 100644
 --- a/chrome/browser/ui/browser_live_tab_context.cc
 +++ b/chrome/browser/ui/browser_live_tab_context.cc
 @@ -11,7 +11,6 @@
@@ -335,7 +320,7 @@ index 6a4b513..711fa24 100644
  #include "content/public/browser/navigation_controller.h"
  #include "content/public/browser/session_storage_namespace_handle.h"
  #include "content/public/browser/web_contents.h"
-@@ -209,14 +207,8 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
+@@ -209,14 +207,8 @@ std::map<std::string, std::string> Brows
  
    tabs::TabInterface* const tab = tab_strip_model_->GetTabAtIndex(index);
    glic::PopulateGlicExtraData(tab, &extra_data);
@@ -352,7 +337,7 @@ index 6a4b513..711fa24 100644
  
    return extra_data;
  }
-@@ -468,7 +460,11 @@ sessions::LiveTab* BrowserLiveTabContext::AddRestoredTab(
+@@ -468,7 +460,11 @@ sessions::LiveTab* BrowserLiveTabContext
    }
  
    CHECK(web_contents);
@@ -365,8 +350,6 @@ index 6a4b513..711fa24 100644
  
    if (load_policy == chrome::RestoredTabLoadPolicy::kDeferUntilActivation) {
      return sessions::ContentLiveTab::GetOrCreateForWebContents(web_contents);
-diff --git a/chrome/browser/ui/browser_tab_strip_model_delegate.cc b/chrome/browser/ui/browser_tab_strip_model_delegate.cc
-index e4bd28d..e6db351 100644
 --- a/chrome/browser/ui/browser_tab_strip_model_delegate.cc
 +++ b/chrome/browser/ui/browser_tab_strip_model_delegate.cc
 @@ -36,6 +36,7 @@
@@ -377,7 +360,7 @@ index e4bd28d..e6db351 100644
  #include "chrome/browser/ui/tabs/tab_strip_model.h"
  #include "chrome/browser/ui/ui_features.h"
  #include "chrome/browser/ui/unload_controller.h"
-@@ -469,6 +470,11 @@ void BrowserTabStripModelDelegate::CloseTab(
+@@ -469,6 +470,11 @@ void BrowserTabStripModelDelegate::Close
      }
    }
  
@@ -389,8 +372,6 @@ index e4bd28d..e6db351 100644
    if (model->count() == 1 && IsNormalWindow() &&
        base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
            "close-window-with-last-tab") == "never") {
-diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index 735054d..3b9fe83 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -7,8 +7,10 @@
@@ -451,7 +432,7 @@ index 735054d..3b9fe83 100644
  std::unique_ptr<WebContents> CreateRestoredTab(
      BrowserWindowInterface* browser,
      base::span<const SerializedNavigationEntry> navigations,
-@@ -63,6 +92,23 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+@@ -63,6 +92,23 @@ std::unique_ptr<WebContents> CreateResto
      const std::map<std::string, std::string>& extra_data,
      bool initially_hidden,
      bool from_session_restore) {
@@ -475,7 +456,7 @@ index 735054d..3b9fe83 100644
    // TODO(ajwong): Remove the temporary session_storage_namespace_map when
    // we teach session restore to understand that one tab can have multiple
    // SessionStorageNamespaceHandle objects. Also remove the
-@@ -89,7 +135,7 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+@@ -89,7 +135,7 @@ std::unique_ptr<WebContents> CreateResto
  
    std::vector<std::unique_ptr<NavigationEntry>> entries =
        ContentSerializedNavigationBuilder::ToNavigationEntries(
@@ -484,7 +465,7 @@ index 735054d..3b9fe83 100644
  
    blink::UserAgentOverride ua_override;
    ua_override.ua_string_override = user_agent_override.ua_string_override;
-@@ -113,6 +159,10 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+@@ -113,6 +159,10 @@ std::unique_ptr<WebContents> CreateResto
  // cross-platform expectations about events it observes.
  void LoadRestoredTabIfVisible(BrowserWindowInterface* browser,
                                content::WebContents* web_contents) {
@@ -495,7 +476,7 @@ index 735054d..3b9fe83 100644
    if (web_contents->GetVisibility() != content::Visibility::VISIBLE) {
      return;
    }
-@@ -141,6 +191,7 @@ WebContents* AddRestoredTabImpl(std::unique_ptr<WebContents> web_contents,
+@@ -141,6 +191,7 @@ WebContents* AddRestoredTabImpl(std::uni
                                  bool select,
                                  bool pin,
                                  bool from_session_restore,
@@ -503,7 +484,7 @@ index 735054d..3b9fe83 100644
                                  std::optional<bool> is_active_browser,
                                  RestoredTabLoadPolicy load_policy) {
    TabStripModel* const tab_strip_model = browser->tab_strip_model();
-@@ -193,6 +244,10 @@ WebContents* AddRestoredTabImpl(std::unique_ptr<WebContents> web_contents,
+@@ -193,6 +244,10 @@ WebContents* AddRestoredTabImpl(std::uni
                                           add_types, group);
    }
  
@@ -538,9 +519,6 @@ index 735054d..3b9fe83 100644
  }
  
  WebContents* ReplaceRestoredTab(
-diff --git a/chrome/browser/ui/helium/anchored_tab_hibernation.cc b/chrome/browser/ui/helium/anchored_tab_hibernation.cc
-new file mode 100644
-index 0000000..06ebe59
 --- /dev/null
 +++ b/chrome/browser/ui/helium/anchored_tab_hibernation.cc
 @@ -0,0 +1,381 @@
@@ -925,9 +903,6 @@ index 0000000..06ebe59
 +}
 +
 +}  // namespace helium
-diff --git a/chrome/browser/ui/helium/anchored_tab_hibernation.h b/chrome/browser/ui/helium/anchored_tab_hibernation.h
-new file mode 100644
-index 0000000..bfbd7c7
 --- /dev/null
 +++ b/chrome/browser/ui/helium/anchored_tab_hibernation.h
 @@ -0,0 +1,45 @@
@@ -976,8 +951,6 @@ index 0000000..bfbd7c7
 +}  // namespace helium
 +
 +#endif  // CHROME_BROWSER_UI_HELIUM_ANCHORED_TAB_HIBERNATION_H_
-diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 0b2de7a..45f1fe6 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
 @@ -45,6 +45,7 @@
@@ -988,7 +961,7 @@ index 0b2de7a..45f1fe6 100644
  #include "chrome/browser/ui/tabs/tab_strip_user_gesture_details.h"
  #include "chrome/browser/ui/toasts/api/toast_id.h"
  #include "chrome/browser/ui/toasts/toast_controller.h"
-@@ -787,6 +788,22 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
+@@ -787,6 +788,22 @@ base::WeakPtr<content::NavigationHandle>
          params->browser->GetTabStripModel()->GetActiveWebContents();
    }
  
@@ -1011,8 +984,6 @@ index 0b2de7a..45f1fe6 100644
    WebContents* contents_to_navigate_or_insert =
        params->contents_to_insert.get();
    if (params->switch_to_singleton_tab) {
-diff --git a/chrome/browser/ui/tab_ui_helper.cc b/chrome/browser/ui/tab_ui_helper.cc
-index df74e2d..ba2bec4 100644
 --- a/chrome/browser/ui/tab_ui_helper.cc
 +++ b/chrome/browser/ui/tab_ui_helper.cc
 @@ -29,6 +29,7 @@
@@ -1023,7 +994,7 @@ index df74e2d..ba2bec4 100644
  #include "chrome/browser/ui/tabs/tab_strip_model.h"
  #include "chrome/browser/ui/web_applications/app_browser_controller.h"
  #include "chrome/browser/ui/web_applications/web_app_browser_controller.h"
-@@ -137,9 +138,13 @@ base::CallbackListSubscription TabUIHelper::AddTabUIChangeCallback(
+@@ -137,9 +138,13 @@ base::CallbackListSubscription TabUIHelp
  }
  
  std::u16string TabUIHelper::GetTitle() const {
@@ -1038,7 +1009,7 @@ index df74e2d..ba2bec4 100644
    if (auto* tab_features = tab().GetTabFeatures()) {
      const tab_groups::SavedTabGroupWebContentsListener* wc_listener =
          tab_features->saved_tab_group_web_contents_listener();
-@@ -252,11 +257,16 @@ ui::ImageModel TabUIHelper::GetFavicon() {
+@@ -252,11 +257,16 @@ ui::ImageModel TabUIHelper::GetFavicon()
    content::WebContents* const contents = web_contents();
    const auto* driver = favicon::ContentFaviconDriver::FromWebContents(contents);
    gfx::Image favicon = favicon::GetTabFaviconMaybeDesaturatedOnError(contents);
@@ -1058,7 +1029,7 @@ index df74e2d..ba2bec4 100644
        MaybeFetchRestoredFavicon(last_entry);
      }
    }
-@@ -548,6 +558,10 @@ void TabUIHelper::OnRestoredFaviconFetched(
+@@ -548,6 +558,10 @@ void TabUIHelper::OnRestoredFaviconFetch
  }
  
  void TabUIHelper::SetCustomTitle(std::u16string title, bool persist) {
@@ -1069,7 +1040,7 @@ index df74e2d..ba2bec4 100644
    custom_title_ = std::move(title);
    // Push the new title through the existing tab-state-changed plumbing.
    if (web_contents()) {
-@@ -578,7 +592,7 @@ void TabUIHelper::SetCustomTitle(std::u16string title, bool persist) {
+@@ -578,7 +592,7 @@ void TabUIHelper::SetCustomTitle(std::u1
  void TabUIHelper::RestoreCustomTitleFromExtraData(
      content::WebContents* web_contents,
      const std::map<std::string, std::string>& extra_data) {
@@ -1078,10 +1049,11 @@ index df74e2d..ba2bec4 100644
      return;
    }
  
-@@ -596,6 +610,70 @@ void TabUIHelper::RestoreCustomTitleFromExtraData(
+@@ -595,6 +609,70 @@ void TabUIHelper::RestoreCustomTitleFrom
+     }
    }
  }
- 
++
 +void TabUIHelper::SetAnchoredURL(const GURL& url,
 +                                 std::u16string title,
 +                                 bool persist) {
@@ -1145,15 +1117,12 @@ index df74e2d..ba2bec4 100644
 +    }
 +  }
 +}
-+
+ 
  base::WeakPtr<TabUIHelper> TabUIHelper::GetWeakPtr() {
    return weak_factory_.GetWeakPtr();
- }
-diff --git a/chrome/browser/ui/tab_ui_helper.h b/chrome/browser/ui/tab_ui_helper.h
-index da03af8..3e087ba 100644
 --- a/chrome/browser/ui/tab_ui_helper.h
 +++ b/chrome/browser/ui/tab_ui_helper.h
-@@ -129,7 +129,18 @@ class TabUIHelper : public tabs::ContentsObservingTabFeature {
+@@ -129,7 +129,18 @@ class TabUIHelper : public tabs::Content
        content::WebContents* web_contents,
        const std::map<std::string, std::string>& extra_data);
    const std::u16string& custom_title() const { return custom_title_; }
@@ -1172,7 +1141,7 @@ index da03af8..3e087ba 100644
  
    base::WeakPtr<TabUIHelper> GetWeakPtr();
  
-@@ -161,6 +172,8 @@ class TabUIHelper : public tabs::ContentsObservingTabFeature {
+@@ -161,6 +172,8 @@ class TabUIHelper : public tabs::Content
    ui::ScopedUnownedUserData<TabUIHelper> scoped_unowned_user_data_;
  
    std::u16string custom_title_;
@@ -1181,8 +1150,6 @@ index da03af8..3e087ba 100644
    GURL last_requested_favicon_page_url_;
    bool favicon_fetch_in_flight_ = false;
    base::CancelableTaskTracker favicon_task_tracker_;
-diff --git a/chrome/browser/ui/tabs/saved_tab_groups/local_tab_group_listener.cc b/chrome/browser/ui/tabs/saved_tab_groups/local_tab_group_listener.cc
-index 2700309..d16d332 100644
 --- a/chrome/browser/ui/tabs/saved_tab_groups/local_tab_group_listener.cc
 +++ b/chrome/browser/ui/tabs/saved_tab_groups/local_tab_group_listener.cc
 @@ -19,6 +19,7 @@
@@ -1233,7 +1200,7 @@ index 2700309..d16d332 100644
  
  LocalTabGroupListener::LocalTabGroupListener(
      const tab_groups::TabGroupId local_id,
-@@ -351,7 +379,8 @@ void LocalTabGroupListener::MatchLocalTabToSavedTab(
+@@ -351,7 +379,8 @@ void LocalTabGroupListener::MatchLocalTa
                                       false);
  
    // Navigate if needed.
@@ -1243,8 +1210,6 @@ index 2700309..d16d332 100644
      SavedTabGroupWebContentsListener* listener =
          local_tab->GetTabFeatures()->saved_tab_group_web_contents_listener();
      listener->NavigateToUrl(base::PassKey<LocalTabGroupListener>(),
-diff --git a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_model_listener.cc b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_model_listener.cc
-index dece33f..e5a5b09 100644
 --- a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_model_listener.cc
 +++ b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_model_listener.cc
 @@ -12,10 +12,12 @@
@@ -1296,7 +1261,7 @@ index dece33f..e5a5b09 100644
  SavedTabGroupModelListener::SavedTabGroupModelListener() = default;
  
  SavedTabGroupModelListener::SavedTabGroupModelListener(
-@@ -91,6 +122,7 @@ void SavedTabGroupModelListener::OnTabGroupWillBeRemoved(
+@@ -91,6 +122,7 @@ void SavedTabGroupModelListener::OnTabGr
      return;
    }
  
@@ -1304,8 +1269,6 @@ index dece33f..e5a5b09 100644
    DisconnectLocalTabGroup(group_id, ClosingSource::kDeletedByUser);
  }
  
-diff --git a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.cc b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.cc
-index 07a9e8c..432e2bd 100644
 --- a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.cc
 +++ b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.cc
 @@ -38,6 +38,7 @@
@@ -1316,7 +1279,7 @@ index 07a9e8c..432e2bd 100644
  #include "chrome/browser/ui/ui_features.h"
  #include "chrome/browser/ui/views/data_sharing/collaboration_controller_delegate_desktop.h"
  #include "chrome/browser/ui/views/tabs/groups/recent_activity_bubble_dialog_view.h"
-@@ -520,10 +521,19 @@ SavedTabGroupUtils::OpenSavedTabGroup(BrowserWindowInterface* browser,
+@@ -520,10 +521,19 @@ SavedTabGroupUtils::OpenSavedTabGroup(Br
  SavedTabGroupTab SavedTabGroupUtils::CreateSavedTabGroupTabFromWebContents(
      content::WebContents* contents,
      base::Uuid saved_tab_group_id) {
@@ -1340,8 +1303,6 @@ index 07a9e8c..432e2bd 100644
    return tab;
  }
  
-diff --git a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_web_contents_listener.cc b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_web_contents_listener.cc
-index 3bfc9c5..71e9fef 100644
 --- a/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_web_contents_listener.cc
 +++ b/chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_web_contents_listener.cc
 @@ -15,10 +15,12 @@
@@ -1357,7 +1318,7 @@ index 3bfc9c5..71e9fef 100644
  #include "components/data_sharing/public/features.h"
  #include "components/favicon/core/favicon_service.h"
  #include "components/favicon_base/favicon_callback.h"
-@@ -193,8 +195,12 @@ void SavedTabGroupWebContentsListener::NavigateToUrlInternal(const GURL& url) {
+@@ -193,8 +195,12 @@ void SavedTabGroupWebContentsListener::N
    // If deferring remote navigations is enabled (sharing) and the tab is in the
    // background, then dont actually perform the navigation, instead cache the
    // URL for performing the navigation later.
@@ -1372,7 +1333,7 @@ index 3bfc9c5..71e9fef 100644
      PerformNavigation(url);
    } else {
      favicon::FaviconService* favicon_service =
-@@ -281,6 +287,14 @@ void SavedTabGroupWebContentsListener::DidFinishNavigation(
+@@ -281,6 +287,14 @@ void SavedTabGroupWebContentsListener::D
    SavedTabGroupTab* tab = group->GetTab(local_tab_id());
    CHECK(tab);
  
@@ -1387,8 +1348,6 @@ index 3bfc9c5..71e9fef 100644
    service_->NavigateTab(group->local_group_id().value(), local_tab_id(),
                          contents()->GetURL(), contents()->GetTitle());
  
-diff --git a/chrome/browser/ui/tabs/saved_tab_groups/tab_group_sync_delegate_desktop.cc b/chrome/browser/ui/tabs/saved_tab_groups/tab_group_sync_delegate_desktop.cc
-index 629d76a..dd1507c 100644
 --- a/chrome/browser/ui/tabs/saved_tab_groups/tab_group_sync_delegate_desktop.cc
 +++ b/chrome/browser/ui/tabs/saved_tab_groups/tab_group_sync_delegate_desktop.cc
 @@ -8,8 +8,13 @@
@@ -1414,7 +1373,7 @@ index 629d76a..dd1507c 100644
  #include "components/tab_groups/tab_group_id.h"
  #include "components/tabs/public/tab_interface.h"
  #include "content/public/browser/navigation_handle.h"
-@@ -122,6 +129,41 @@ tabs::TabInterface* MaybeOpenTabFromSavedTab(const SavedTabGroupTab& saved_tab,
+@@ -122,6 +129,41 @@ tabs::TabInterface* MaybeOpenTabFromSave
      return nullptr;
    }
  
@@ -1456,7 +1415,7 @@ index 629d76a..dd1507c 100644
    content::NavigationHandle* navigation_handle =
        SavedTabGroupUtils::OpenTabInBrowser(
            saved_tab.url(), browser, browser->GetProfile(),
-@@ -197,8 +239,9 @@ TabGroupSyncDelegateDesktop::HandleOpenTabGroupRequest(
+@@ -197,8 +239,9 @@ TabGroupSyncDelegateDesktop::HandleOpenT
    // Add the tabs to a new group in the tabstrip and link it to `group`.
    return AddOpenedTabsToGroup(
        browser->GetTabStripModel(), std::move(tab_guid_mapping), group.value(),
@@ -1468,8 +1427,6 @@ index 629d76a..dd1507c 100644
  }
  
  void TabGroupSyncDelegateDesktop::CreateLocalTabGroup(
-diff --git a/chrome/browser/ui/tabs/tab_data.cc b/chrome/browser/ui/tabs/tab_data.cc
-index f39e660..77d6076 100644
 --- a/chrome/browser/ui/tabs/tab_data.cc
 +++ b/chrome/browser/ui/tabs/tab_data.cc
 @@ -4,6 +4,7 @@
@@ -1488,7 +1445,7 @@ index f39e660..77d6076 100644
  #include "components/collaboration/public/messaging/messaging_backend_service.h"
  #include "components/tabs/public/tab_alert.h"
  #include "components/tabs/public/tab_interface.h"
-@@ -54,7 +56,10 @@ TabData TabData::FromTabInterface(tabs::TabInterface* tab_interface) {
+@@ -54,7 +56,10 @@ TabData TabData::FromTabInterface(tabs::
    tab_data.network_state = tab_ui_helper->GetTabNetworkState();
    tab_data.is_tab_discarded = tab_ui_helper->IsDiscarded();
    tab_data.last_committed_url = tab_ui_helper->GetLastCommittedURL();
@@ -1511,8 +1468,6 @@ index f39e660..77d6076 100644
    if (tab_data_.alert_state != alert_to_show) {
      tab_data_.alert_state = alert_to_show;
      NotifyTabDataChanged(TabChangeType::kAll);
-diff --git a/chrome/browser/ui/tabs/tab_menu_model.cc b/chrome/browser/ui/tabs/tab_menu_model.cc
-index 30016aa..4963eae 100644
 --- a/chrome/browser/ui/tabs/tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/tab_menu_model.cc
 @@ -628,11 +628,16 @@ void TabMenuModel::Build(int index) {
@@ -1534,8 +1489,6 @@ index 30016aa..4963eae 100644
    }
  
    AddSeparator(ui::NORMAL_SEPARATOR);
-diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 6e634f3..04314a7 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -52,6 +52,7 @@
@@ -1635,7 +1588,7 @@ index 6e634f3..04314a7 100644
  // Works similarly to base::AutoReset but checks for access from the wrong
  // thread as well as ensuring that the previous value of the re-entrancy guard
  // variable was false.
-@@ -243,6 +312,11 @@ base::WeakPtr<performance_manager::PageNode> GetDiscardCandidatePageNode(
+@@ -243,6 +312,11 @@ base::WeakPtr<performance_manager::PageN
    return page_node;
  }
  
@@ -1647,7 +1600,7 @@ index 6e634f3..04314a7 100644
  }  // namespace
  
  TabGroupModelFactory::TabGroupModelFactory() {
-@@ -1381,6 +1455,11 @@ void TabStripModel::CloseAllTabsInGroupImpl(
+@@ -1381,6 +1455,11 @@ void TabStripModel::CloseAllTabsInGroupI
        gfx::Range(tabs_in_group.GetMax(), tabs_in_group.GetMin()).ToIntVector();
    std::vector<content::WebContents*> closing_tabs =
        GetWebContentsesByIndices(reversed_group_indices);
@@ -1659,7 +1612,7 @@ index 6e634f3..04314a7 100644
    CloseTabs(closing_tabs, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
  }
  
-@@ -1484,7 +1563,12 @@ int TabStripModel::SetTabPinned(int index, bool pinned) {
+@@ -1484,7 +1563,12 @@ int TabStripModel::SetTabPinned(int inde
      return index;
    }
  
@@ -1673,7 +1626,7 @@ index 6e634f3..04314a7 100644
  }
  
  bool TabStripModel::IsTabPinned(int index) const {
-@@ -1790,6 +1874,11 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+@@ -1790,6 +1874,11 @@ void TabStripModel::AddTab(std::unique_p
    if (ui::PageTransitionTypeIncludingQualifiersIs(transition,
                                                    ui::PAGE_TRANSITION_LINK) &&
        (add_types & ADD_FORCE_INDEX) == 0) {
@@ -1685,7 +1638,7 @@ index 6e634f3..04314a7 100644
      // We assume tabs opened via link clicks are part of the same task as their
      // parent.  Note that when `force_index` is true (e.g. when the user
      // drag-and-drops a link to the tab strip), callers aren't really handling
-@@ -1800,8 +1889,14 @@ void TabStripModel::AddTab(std::unique_ptr<tabs::TabModel> tab,
+@@ -1800,8 +1889,14 @@ void TabStripModel::AddTab(std::unique_p
  
      // The current active index is our opener. If the tab we are adding is not
      // in a group, set the group of the tab to that of its opener.
@@ -1702,7 +1655,7 @@ index 6e634f3..04314a7 100644
      }
    } else {
      // For all other types, respect what was passed to us, normalizing -1s and
-@@ -2746,6 +2841,10 @@ bool TabStripModel::IsContextMenuCommandEnabled(
+@@ -2746,6 +2841,10 @@ bool TabStripModel::IsContextMenuCommand
        return delegate_->CanReload();
  
      case CommandDiscard: {
@@ -1713,7 +1666,7 @@ index 6e634f3..04314a7 100644
        auto* const eligibility_policy = GetDiscardEligibilityPolicy();
        if (!eligibility_policy) {
          return false;
-@@ -2762,9 +2861,15 @@ bool TabStripModel::IsContextMenuCommandEnabled(
+@@ -2762,9 +2861,15 @@ bool TabStripModel::IsContextMenuCommand
      }
  
      case CommandRenameTab: {
@@ -1730,7 +1683,7 @@ index 6e634f3..04314a7 100644
      case CommandCloseOtherTabs:
      case CommandCloseTabsToLeft:
      case CommandCloseTabsToRight: {
-@@ -2946,6 +3051,10 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2946,6 +3051,10 @@ void TabStripModel::ExecuteContextMenuCo
      }
  
      case CommandDiscard: {
@@ -1741,7 +1694,7 @@ index 6e634f3..04314a7 100644
        auto* const eligibility_policy = GetDiscardEligibilityPolicy();
        if (!eligibility_policy) {
          break;
-@@ -2968,6 +3077,9 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2968,6 +3077,9 @@ void TabStripModel::ExecuteContextMenuCo
      }
  
      case CommandRenameTab: {
@@ -1751,7 +1704,7 @@ index 6e634f3..04314a7 100644
        base::RecordAction(UserMetricsAction("TabContextMenu_RenameTab"));
        WebContents* const contents = GetWebContentsAt(context_index);
        if (!contents) {
-@@ -2994,6 +3106,16 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
+@@ -2994,6 +3106,16 @@ void TabStripModel::ExecuteContextMenuCo
        break;
      }
  
@@ -1779,7 +1732,7 @@ index 6e634f3..04314a7 100644
    // Have to get the active contents before we monkey with the contents
    // otherwise we run into problems when we try to change the active contents
    // since the old contents and the new contents will be the same...
-@@ -4230,6 +4356,22 @@ void TabStripModel::CloseTabs(base::span<content::WebContents* const> items,
+@@ -4230,6 +4356,22 @@ void TabStripModel::CloseTabs(base::span
      return;
    }
  
@@ -1802,7 +1755,7 @@ index 6e634f3..04314a7 100644
    const bool closing_all = static_cast<int>(filtered_items.size()) == count();
    base::WeakPtr<TabStripModel> ref = weak_factory_.GetWeakPtr();
    if (closing_all) {
-@@ -5075,6 +5217,7 @@ void TabStripModel::AddToNewGroupImpl(const std::vector<int>& indices,
+@@ -5075,6 +5217,7 @@ void TabStripModel::AddToNewGroupImpl(co
    const gfx::Range tab_indices =
        group_model()->GetTabGroup(new_group)->ListTabs();
    for (auto index = tab_indices.start(); index < tab_indices.end(); ++index) {
@@ -1810,7 +1763,7 @@ index 6e634f3..04314a7 100644
      if (active_index() != static_cast<int>(index) && IsTabSelected(index)) {
        DeselectTabAt(index);
      }
-@@ -5133,6 +5276,11 @@ void TabStripModel::AddToExistingGroupImpl(const std::vector<int>& indices,
+@@ -5133,6 +5276,11 @@ void TabStripModel::AddToExistingGroupIm
      MoveTabsAndSetPropertiesImpl(tabs_right_of_group, last_tab_index + 1, group,
                                   false);
    }
@@ -1822,7 +1775,7 @@ index 6e634f3..04314a7 100644
  }
  
  void TabStripModel::MoveTabsAndSetPropertiesImpl(
-@@ -6154,6 +6302,21 @@ std::optional<int> TabStripModel::DetermineNewSelectedIndex(
+@@ -6154,6 +6302,21 @@ std::optional<int> TabStripModel::Determ
        return !IsTabCollapsed(index) && is_valid_for_focus(index);
      };
  
@@ -1844,8 +1797,6 @@ index 6e634f3..04314a7 100644
      // First preference is a tab the block opened.
      int new_selected_index =
          GetIndexOfNextWebContentsOpenedBy(block_tabs, is_eligible);
-diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index e48bfe3..90cedf2 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -4,11 +4,16 @@
@@ -1865,7 +1816,7 @@ index e48bfe3..90cedf2 100644
  #include "chrome/common/chrome_features.h"
  #include "components/search/ntp_features.h"
  #include "components/variations/service/variations_service.h"
-@@ -30,6 +35,34 @@ bool IsProcessOverheadExperimentActive() {
+@@ -30,6 +35,34 @@ bool IsProcessOverheadExperimentActive()
  
  namespace features {
  
@@ -1900,8 +1851,6 @@ index e48bfe3..90cedf2 100644
  // Controls the confirmation shown before opening many bookmarks at once.
  BASE_FEATURE(kBookmarkOpenAllConfirmation, base::FEATURE_ENABLED_BY_DEFAULT);
  
-diff --git a/chrome/browser/ui/ui_features.h b/chrome/browser/ui/ui_features.h
-index f77dd77..7fa63bc 100644
 --- a/chrome/browser/ui/ui_features.h
 +++ b/chrome/browser/ui/ui_features.h
 @@ -21,6 +21,9 @@ namespace features {
@@ -1914,11 +1863,9 @@ index f77dd77..7fa63bc 100644
  BASE_DECLARE_FEATURE(kUseActionsForBrowserCommands);
  bool ShouldUseActionsForBrowserCommands();
  
-diff --git a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
-index 5cada2a..6fb2add 100644
 --- a/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/vertical_tab_strip_region_view.cc
-@@ -849,9 +849,20 @@ void VerticalTabStripRegionView::AddTabStripView(
+@@ -849,9 +849,20 @@ void VerticalTabStripRegionView::AddTabS
    std::optional<size_t> bottom_container_index =
        content_parent->GetIndexOf(bottom_button_container_);
    CHECK(bottom_container_index.has_value());
@@ -1939,7 +1886,7 @@ index 5cada2a..6fb2add 100644
    // Pre-set the animation values to the appropriate state.
    auto* const animation_controller =
        BrowserAnimationController::From(browser_view()->browser());
-@@ -876,6 +887,30 @@ void VerticalTabStripRegionView::AddTabStripView(
+@@ -876,6 +887,30 @@ void VerticalTabStripRegionView::AddTabS
  
  std::unique_ptr<views::View> VerticalTabStripRegionView::RemoveTabStripView(
      views::View* view) {
@@ -1970,7 +1917,7 @@ index 5cada2a..6fb2add 100644
    on_animation_update_subscription_.reset();
    expand_on_hover_enabled_changed_subscription_.reset();
    omnibox_tab_helper_observation_.Reset();
-@@ -952,9 +987,15 @@ gfx::Rect VerticalTabStripRegionView::GetTabStripDraggableBounds() const {
+@@ -952,9 +987,15 @@ gfx::Rect VerticalTabStripRegionView::Ge
    // tab strip's max size, saving space for the bottom button container and
    // padding.
    gfx::Rect tab_strip_draggable_bounds = tab_strip_view()->GetBoundsInScreen();
@@ -1988,11 +1935,9 @@ index 5cada2a..6fb2add 100644
        GetLayoutConstant(
            LayoutConstant::kVerticalTabStripUncollapsedVerticalPadding) -
        tab_strip_draggable_bounds.y());
-diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.cc b/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.cc
-index a375430..4917196 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.cc
-@@ -74,7 +74,8 @@ TabCollectionAnimatingLayoutManager::TabCollectionAnimatingLayoutManager(
+@@ -74,7 +74,8 @@ TabCollectionAnimatingLayoutManager::Tab
      std::unique_ptr<LayoutManagerBase> target_layout_manager,
      Delegate& delegate,
      AnimationAxis animation_axis,
@@ -2002,7 +1947,7 @@ index a375430..4917196 100644
      : views::AnimationDelegateViews(target_layout_manager->host_view()),
        target_layout_manager_(
            CHECK_DEREF(AddOwnedLayout(std::move(target_layout_manager)))),
-@@ -82,8 +83,7 @@ TabCollectionAnimatingLayoutManager::TabCollectionAnimatingLayoutManager(
+@@ -82,8 +83,7 @@ TabCollectionAnimatingLayoutManager::Tab
        delegate_(delegate),
        animation_axis_(animation_axis),
        animate_host_size_(animate_host_size) {
@@ -2012,8 +1957,6 @@ index a375430..4917196 100644
    animation_.SetTweenType(gfx::Tween::EASE_IN_OUT);
  }
  
-diff --git a/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.h b/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.h
-index 0407b26..2a8f0a8 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_collection_animating_layout_manager.h
 @@ -12,6 +12,7 @@
@@ -2024,7 +1967,7 @@ index 0407b26..2a8f0a8 100644
  #include "ui/gfx/animation/slide_animation.h"
  #include "ui/views/animation/animation_delegate_views.h"
  #include "ui/views/layout/layout_manager_base.h"
-@@ -73,7 +74,9 @@ class TabCollectionAnimatingLayoutManager
+@@ -73,7 +74,9 @@ class TabCollectionAnimatingLayoutManage
        std::unique_ptr<LayoutManagerBase> target_layout_manager,
        Delegate& delegate,
        AnimationAxis animation_axis = AnimationAxis::kVertical,
@@ -2035,11 +1978,9 @@ index 0407b26..2a8f0a8 100644
    TabCollectionAnimatingLayoutManager(
        const TabCollectionAnimatingLayoutManager&) = delete;
    TabCollectionAnimatingLayoutManager& operator=(
-diff --git a/chrome/browser/ui/views/tabs/common/tab_group_header_view.cc b/chrome/browser/ui/views/tabs/common/tab_group_header_view.cc
-index 169ca6d..0aa0b86 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_header_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_header_view.cc
-@@ -94,6 +94,38 @@ void ConfigureEditorBubbleButton(views::LabelButton* button) {
+@@ -94,6 +94,38 @@ void ConfigureEditorBubbleButton(views::
                        kTabGroupEditorBubbleButtonElementId);
  }
  
@@ -2101,7 +2042,7 @@ index 169ca6d..0aa0b86 100644
    editor_bubble_opened_subscription_ =
        editor_bubble_tracker_.RegisterOnBubbleOpened(base::BindRepeating(
            &TabGroupHeaderView::OnBubbleOpened, base::Unretained(this)));
-@@ -643,6 +684,11 @@ void TabGroupHeaderView::UpdateColors() {
+@@ -643,6 +684,11 @@ void TabGroupHeaderView::UpdateColors()
      UpdateEditorBubbleButtonVisibility();
    }
  
@@ -2113,7 +2054,7 @@ index 169ca6d..0aa0b86 100644
    // Update collapse icon.
    if (collapse_icon_) {
      collapse_icon_->SetVisible(!delegate_->IsGroupFocused());
-@@ -676,6 +722,13 @@ void TabGroupHeaderView::UpdateEditorBubbleButtonVisibility() {
+@@ -676,6 +722,13 @@ void TabGroupHeaderView::UpdateEditorBub
        IsMouseHovered() || Contains(focus_manager->GetFocusedView()));
  }
  
@@ -2127,11 +2068,9 @@ index 169ca6d..0aa0b86 100644
  void TabGroupHeaderView::OnBubbleOpened() {
    if (!expand_on_hover_lock_) {
      expand_on_hover_lock_ = delegate_->AcquireExpandOnHoverLock();
-diff --git a/chrome/browser/ui/views/tabs/common/tab_group_header_view.h b/chrome/browser/ui/views/tabs/common/tab_group_header_view.h
-index a06c09e..1cc141e 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_header_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_header_view.h
-@@ -67,6 +67,10 @@ class TabGroupHeaderView : public views::FlexLayoutView,
+@@ -67,6 +67,10 @@ class TabGroupHeaderView : public views:
  
      virtual bool IsGroupFocused() const = 0;
      virtual HorizontalTabClosingHelper* GetTabClosingHelper() const = 0;
@@ -2142,7 +2081,7 @@ index a06c09e..1cc141e 100644
    };
  
    TabGroupHeaderView(
-@@ -118,6 +122,12 @@ class TabGroupHeaderView : public views::FlexLayoutView,
+@@ -118,6 +122,12 @@ class TabGroupHeaderView : public views:
    tab_groups::TabGroupId group() const;
  
    views::LabelButton* editor_bubble_button() { return editor_bubble_button_; }
@@ -2155,7 +2094,7 @@ index a06c09e..1cc141e 100644
    views::ImageView* collapse_icon_for_testing() { return collapse_icon_; }
    views::ImageView* attention_indicator_for_testing() {
      return attention_indicator_;
-@@ -158,6 +168,7 @@ class TabGroupHeaderView : public views::FlexLayoutView,
+@@ -158,6 +168,7 @@ class TabGroupHeaderView : public views:
    const raw_ptr<views::ImageView> attention_indicator_ = nullptr;
  
    const raw_ptr<views::LabelButton> editor_bubble_button_ = nullptr;
@@ -2163,8 +2102,6 @@ index a06c09e..1cc141e 100644
  
    const raw_ptr<views::ImageView> collapse_icon_ = nullptr;
    const raw_ref<Delegate> delegate_;
-diff --git a/chrome/browser/ui/views/tabs/common/tab_group_view.cc b/chrome/browser/ui/views/tabs/common/tab_group_view.cc
-index 6bde5c9..7887ebb 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_view.cc
 @@ -6,10 +6,12 @@
@@ -2195,7 +2132,7 @@ index 6bde5c9..7887ebb 100644
    }
  
    group_line_->SchedulePaint();
-@@ -340,11 +344,56 @@ void TabGroupView::UpdateChildVisibilityForCollapseState(bool collapsed) {
+@@ -340,11 +344,56 @@ void TabGroupView::UpdateChildVisibility
      return;
    }
    SetIsCollapsed(collapsed);
@@ -2253,11 +2190,9 @@ index 6bde5c9..7887ebb 100644
  bool TabGroupView::IsCollapsed() const {
    return tab_group_visual_data_.is_collapsed();
  }
-diff --git a/chrome/browser/ui/views/tabs/common/tab_group_view.h b/chrome/browser/ui/views/tabs/common/tab_group_view.h
-index 13874a7..4fafb57 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_view.h
-@@ -66,6 +66,8 @@ class TabGroupView : public TabCollectionZOrderManager,
+@@ -66,6 +66,8 @@ class TabGroupView : public TabCollectio
    void ShiftGroupDown() override;
    bool IsGroupFocused() const override;
    HorizontalTabClosingHelper* GetTabClosingHelper() const override;
@@ -2266,7 +2201,7 @@ index 13874a7..4fafb57 100644
  
    // TabCollectionAnimatingLayoutManager::Delegate:
    bool IsDragging() const override;
-@@ -79,6 +81,10 @@ class TabGroupView : public TabCollectionZOrderManager,
+@@ -79,6 +81,10 @@ class TabGroupView : public TabCollectio
  
    bool IsCollapsed() const;
  
@@ -2277,7 +2212,7 @@ index 13874a7..4fafb57 100644
    std::optional<BrowserRootView::DropIndex> GetLinkDropIndex(
        const gfx::Point& point_in_local_coords);
  
-@@ -122,6 +128,7 @@ class TabGroupView : public TabCollectionZOrderManager,
+@@ -122,6 +128,7 @@ class TabGroupView : public TabCollectio
    bool is_collapsed() const { return is_collapsed_; }
  
    void SetIsCollapsed(bool is_collapsed);
@@ -2285,8 +2220,6 @@ index 13874a7..4fafb57 100644
  
    void ResetCollectionNode();
    void OnDataChanged();
-diff --git a/chrome/browser/ui/views/tabs/common/tab_group_view_layout.cc b/chrome/browser/ui/views/tabs/common/tab_group_view_layout.cc
-index 6ebf4b0..9d134c3 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_view_layout.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_view_layout.cc
 @@ -7,6 +7,7 @@
@@ -2297,7 +2230,7 @@ index 6ebf4b0..9d134c3 100644
  #include "chrome/browser/ui/views/tabs/common/split_tab_view.h"
  #include "chrome/browser/ui/views/tabs/common/tab_collection_node.h"
  #include "chrome/browser/ui/views/tabs/common/tab_group_header_view.h"
-@@ -67,6 +68,11 @@ views::ProposedLayout TabGroupViewLayout::CalculateVerticalLayout(
+@@ -67,6 +68,11 @@ views::ProposedLayout TabGroupViewLayout
    int width = 0;
    int height = kGroupHeaderVerticalMargin;
    auto tab_strip_collapse_state = tab_group_view->GetTabStripCollapseState();
@@ -2309,7 +2242,7 @@ index 6ebf4b0..9d134c3 100644
  
    gfx::Rect header_bounds;
    gfx::Rect group_line_bounds;
-@@ -112,11 +118,13 @@ views::ProposedLayout TabGroupViewLayout::CalculateVerticalLayout(
+@@ -112,11 +118,13 @@ views::ProposedLayout TabGroupViewLayout
            : TabCollectionNode::ChildViews();
  
    const bool is_focused = tab_group_view->IsGroupFocused();
@@ -2323,7 +2256,7 @@ index 6ebf4b0..9d134c3 100644
  
      auto drag_data = tab_group_view->GetVisualDataForDraggedView(*child);
      CHECK(!drag_data || !drag_data->should_hide);
-@@ -138,18 +146,29 @@ views::ProposedLayout TabGroupViewLayout::CalculateVerticalLayout(
+@@ -138,18 +146,29 @@ views::ProposedLayout TabGroupViewLayout
      if (size_bounds.width().is_bounded()) {
        bounds.set_width(size_bounds.width().value() - bounds.x());
      }
@@ -2356,7 +2289,7 @@ index 6ebf4b0..9d134c3 100644
    if (tab_group_view->group_line_) {
      layouts.child_layouts.emplace_back(tab_group_view->group_line_.get(),
                                         show_group_line, group_line_bounds);
-@@ -173,7 +192,7 @@ views::ProposedLayout TabGroupViewLayout::CalculateVerticalLayout(
+@@ -173,7 +192,7 @@ views::ProposedLayout TabGroupViewLayout
    }
  
    layouts.host_size = gfx::Size(
@@ -2365,8 +2298,6 @@ index 6ebf4b0..9d134c3 100644
                   ? header_bounds.height() + (2 * kGroupHeaderVerticalMargin)
                   : std::max(height, dragged_view_bottom));
    return layouts;
-diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
-index 3f0f0d4..47e05a7 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.cc
 @@ -47,6 +47,7 @@
@@ -2377,7 +2308,7 @@ index 3f0f0d4..47e05a7 100644
  #include "ui/base/l10n/l10n_util.h"
  #include "ui/views/interaction/element_tracker_views.h"
  #include "ui/views/view_utils.h"
-@@ -353,6 +354,11 @@ void TabStripCollectionController::ToggleTabGroupCollapsedState(
+@@ -353,6 +354,11 @@ void TabStripCollectionController::Toggl
  
    bool is_currently_collapsed = group->visual_data()->is_collapsed();
    bool should_toggle_group = true;
@@ -2389,7 +2320,7 @@ index 3f0f0d4..47e05a7 100644
  
    // We use a WeakPtr because switching the active tab or adding
    // a new tab during a collapse operation can trigger the automatic
-@@ -361,7 +367,11 @@ void TabStripCollectionController::ToggleTabGroupCollapsedState(
+@@ -361,7 +367,11 @@ void TabStripCollectionController::Toggl
  
    tabs::TabInterface* active_tab = model_->GetActiveTab();
    if (!is_currently_collapsed && active_tab) {
@@ -2402,7 +2333,7 @@ index 3f0f0d4..47e05a7 100644
        // If the active tab is in the group that is toggling to collapse, the
        // active tab should switch to the next available tab. If there are no
        // available tabs for the active tab to switch to, a new tab will
-@@ -403,6 +413,13 @@ void TabStripCollectionController::ToggleTabGroupCollapsedState(
+@@ -403,6 +413,13 @@ void TabStripCollectionController::Toggl
                                         group->visual_data()->color(),
                                         !is_currently_collapsed),
          group->IsCustomized());
@@ -2416,7 +2347,7 @@ index 3f0f0d4..47e05a7 100644
    }
  
    if (should_toggle_group) {
-@@ -413,7 +430,9 @@ void TabStripCollectionController::ToggleTabGroupCollapsedState(
+@@ -413,7 +430,9 @@ void TabStripCollectionController::Toggl
          if (auto* tab_view = views::AsViewClass<TabView>(child_node->view())) {
            if (is_currently_collapsed) {
              tab_view->ReleaseFreezingVote(FreezingVoteReason::kCollapsedGroup);
@@ -2427,11 +2358,9 @@ index 3f0f0d4..47e05a7 100644
              tab_view->CreateFreezingVote(FreezingVoteReason::kCollapsedGroup);
            }
          }
-diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
-index 76f68f8..9115b5e 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_strip_collection_controller.h
-@@ -55,6 +55,7 @@ class TabStripCollectionController : public TabContextMenuController::Delegate {
+@@ -55,6 +55,7 @@ class TabStripCollectionController : pub
    ~TabStripCollectionController() override;
  
    int GetTabCount() const;
@@ -2439,8 +2368,6 @@ index 76f68f8..9115b5e 100644
    const tabs::TabInterface* GetActiveTab() const;
    const TabCollectionNode* GetAdjacentTab(
        const tabs::TabInterface* tab_interface,
-diff --git a/chrome/browser/ui/views/tabs/common/tab_view.cc b/chrome/browser/ui/views/tabs/common/tab_view.cc
-index 24abdbf..c538c5f 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.cc
 @@ -12,6 +12,7 @@
@@ -2520,7 +2447,7 @@ index 24abdbf..c538c5f 100644
  
  class TabHighlightPathGenerator : public views::HighlightPathGenerator {
   public:
-@@ -364,6 +407,11 @@ TabView::TabView(TabCollectionNode* collection_node)
+@@ -364,6 +407,11 @@ TabView::TabView(TabCollectionNode* coll
      }
    }
  
@@ -2563,7 +2490,7 @@ index 24abdbf..c538c5f 100644
  void TabView::UpdateZOrder() {
    using ZOrderLevel = TabCollectionZOrderManager::ZOrderLevel;
    ZOrderLevel target_z = ZOrderLevel::kDefault;
-@@ -1200,6 +1260,10 @@ void TabView::UpdateTabData(const tabs::TabData& data) {
+@@ -1200,6 +1260,10 @@ void TabView::UpdateTabData(const tabs::
    UpdateTitle(tab_data_.title, tab_data_.should_render_loading_title);
    alert_indicator_->TransitionToAlertState(tab_data_.alert_state);
    SetHoverCardDataFrom(tab_data_);
@@ -2597,8 +2524,6 @@ index 24abdbf..c538c5f 100644
    close_button_->SetColors(colors);
    alert_indicator_->OnParentTabButtonColorChanged();
  
-diff --git a/chrome/browser/ui/views/tabs/common/tab_view.h b/chrome/browser/ui/views/tabs/common/tab_view.h
-index 7e7c326..9d0956b 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view.h
 +++ b/chrome/browser/ui/views/tabs/common/tab_view.h
 @@ -215,6 +215,9 @@ class TabView : public views::View,
@@ -2621,8 +2546,6 @@ index 7e7c326..9d0956b 100644
    raw_ptr<glic::TabUnderlineView> glic_tab_underline_view_ = nullptr;
  
    base::CallbackListSubscription node_destroyed_subscription_;
-diff --git a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
-index 2b87a75..57e15c4 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_view_vertical_layout.cc
 @@ -7,6 +7,7 @@
@@ -2641,7 +2564,7 @@ index 2b87a75..57e15c4 100644
  }  // namespace
  
  TabViewVerticalLayout::TabViewVerticalLayout() = default;
-@@ -35,6 +37,10 @@ void TabViewVerticalLayout::OnInstalled(views::View* host) {
+@@ -35,6 +37,10 @@ void TabViewVerticalLayout::OnInstalled(
        TabChildConfig(TabView().icon_, kIconDesignWidth, kHorizontalInset,
                       /*align_leading=*/true,
                       /*expand=*/false),
@@ -2652,7 +2575,7 @@ index 2b87a75..57e15c4 100644
        TabChildConfig(TabView().alert_indicator_, kIconDesignWidth,
                       kDefaultPadding,
                       /*align_leading=*/true,
-@@ -43,6 +49,8 @@ void TabViewVerticalLayout::OnInstalled(views::View* host) {
+@@ -43,6 +49,8 @@ void TabViewVerticalLayout::OnInstalled(
        TabChildConfig(TabView().title_, kTitleMinWidth, kDefaultPadding,
                       /*align_leading=*/true,
                       /*expand=*/true)};
@@ -2661,7 +2584,7 @@ index 2b87a75..57e15c4 100644
  }
  
  views::ProposedLayout TabViewVerticalLayout::CalculateProposedLayout(
-@@ -168,6 +176,13 @@ bool TabViewVerticalLayout::IsChildVisible(const views::View* child_view,
+@@ -168,6 +176,13 @@ bool TabViewVerticalLayout::IsChildVisib
             !IsChildVisible(TabView().alert_indicator_, width);
    }
  
@@ -2675,8 +2598,6 @@ index 2b87a75..57e15c4 100644
    if (child_view == TabView().close_button_) {
      if (TabView().pinned_) {
        return false;
-diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.cc b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.cc
-index 0d3dccc..45bd750 100644
 --- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.cc
 +++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.cc
 @@ -4,8 +4,15 @@
@@ -2713,7 +2634,7 @@ index 0d3dccc..45bd750 100644
  #include "ui/views/layout/layout_types.h"
  #include "ui/views/layout/proposed_layout.h"
  #include "ui/views/view.h"
-@@ -56,6 +69,12 @@ class UnpinnedTabContainerViewTargeter : public views::ViewTargeterDelegate {
+@@ -56,6 +69,12 @@ class UnpinnedTabContainerViewTargeter :
  
    bool DoesIntersectRect(const views::View* target,
                           const gfx::Rect& rect) const override {
@@ -2726,18 +2647,10 @@ index 0d3dccc..45bd750 100644
      gfx::Rect content_bounds;
      for (const views::View* child : view_->children()) {
        if (child->GetVisible()) {
-@@ -69,6 +88,19 @@ class UnpinnedTabContainerViewTargeter : public views::ViewTargeterDelegate {
+@@ -69,6 +88,11 @@ class UnpinnedTabContainerViewTargeter :
    raw_ptr<views::View> view_;
  };
  
-+class ClearUngroupedTabsButton : public views::LabelButton {
-+ public:
-+  ClearUngroupedTabsButton(PressedCallback callback, std::u16string_view text)
-+      : views::LabelButton(std::move(callback), text) {
-+    label()->SetSubpixelRenderingEnabled(false);
-+  }
-+};
-+
 +bool UseAnchoredLayout(const TabCollectionNode* node) {
 +  return node && node->orientation() == TabStripOrientation::kVertical &&
 +         features::IsHeliumAnchoredTabsEnabled();
@@ -2746,7 +2659,7 @@ index 0d3dccc..45bd750 100644
  }  // namespace
  
  UnpinnedTabContainerView::UnpinnedTabContainerView(
-@@ -94,10 +126,36 @@ UnpinnedTabContainerView::UnpinnedTabContainerView(
+@@ -94,10 +118,37 @@ UnpinnedTabContainerView::UnpinnedTabCon
            collection_node->orientation() == TabStripOrientation::kHorizontal
                ? TabCollectionAnimatingLayoutManager::AnimationAxis::kHorizontal
                : TabCollectionAnimatingLayoutManager::AnimationAxis::kVertical,
@@ -2764,10 +2677,11 @@ index 0d3dccc..45bd750 100644
 +    grouped_tabs_separator_ =
 +        AddChildView(std::make_unique<views::Separator>());
 +    clear_ungrouped_tabs_button_ =
-+        AddChildView(std::make_unique<ClearUngroupedTabsButton>(
++        AddChildView(std::make_unique<views::LabelButton>(
 +            base::BindRepeating(&UnpinnedTabContainerView::CloseUngroupedTabs,
 +                                base::Unretained(this)),
 +            std::u16string()));
++    clear_ungrouped_tabs_button_->SetTextSubpixelRenderingEnabled(false);
 +    clear_ungrouped_tabs_button_->SetBorder(
 +        views::CreateEmptyBorder(gfx::Insets()));
 +    clear_ungrouped_tabs_button_->SetEnabledTextColors(
@@ -2784,7 +2698,7 @@ index 0d3dccc..45bd750 100644
    collection_node->set_remove_child_from_node(base::BindRepeating(
        &TabCollectionAnimatingLayoutManager::AnimateAndDestroyChildView,
        base::Unretained(&layout_manager_.get())));
-@@ -112,6 +170,76 @@ UnpinnedTabContainerView::UnpinnedTabContainerView(
+@@ -112,6 +163,76 @@ UnpinnedTabContainerView::UnpinnedTabCon
  
  UnpinnedTabContainerView::~UnpinnedTabContainerView() = default;
  
@@ -2861,8 +2775,6 @@ index 0d3dccc..45bd750 100644
  
  std::optional<BrowserRootView::DropIndex>
  UnpinnedTabContainerView::GetLinkDropIndex(const gfx::Point& loc_in_container) {
-diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.h b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.h
-index 962216b..3af0ad9 100644
 --- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.h
 +++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view.h
 @@ -18,6 +18,11 @@ class TabCollectionNode;
@@ -2920,8 +2832,6 @@ index 962216b..3af0ad9 100644
    // The available main-axis space allocated by TabStripViewLayout.
    views::SizeBound available_space_;
  
-diff --git a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
-index 366f3e3..91da61d 100644
 --- a/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
 +++ b/chrome/browser/ui/views/tabs/common/unpinned_tab_container_view_layout.cc
 @@ -10,6 +10,8 @@
@@ -2948,7 +2858,7 @@ index 366f3e3..91da61d 100644
  }  // namespace
  
  UnpinnedTabContainerViewLayout::UnpinnedTabContainerViewLayout(
-@@ -238,16 +244,16 @@ views::ProposedLayout UnpinnedTabContainerViewLayout::CalculateVerticalLayout(
+@@ -238,16 +244,16 @@ views::ProposedLayout UnpinnedTabContain
    int height = 0;
    int dragged_view_bottom = 0;
    auto collapse_state = tab_container_view->GetTabStripCollapseState();
@@ -2971,7 +2881,7 @@ index 366f3e3..91da61d 100644
      views::SizeBound child_height_bound = size_bounds.height();
      // In focused mode, pass the scroll viewport height constraint to the child
      // focused group if the incoming size bounds height is unbounded, so that
-@@ -275,7 +281,7 @@ views::ProposedLayout UnpinnedTabContainerViewLayout::CalculateVerticalLayout(
+@@ -275,7 +281,7 @@ views::ProposedLayout UnpinnedTabContain
            child, false,
            gfx::Rect(x, drag_data ? drag_data->offset.y() : height,
                      bounds.width(), 0));
@@ -2980,7 +2890,7 @@ index 366f3e3..91da61d 100644
      }
  
      bounds.set_y(drag_data ? drag_data->offset.y() : height);
-@@ -287,6 +293,108 @@ views::ProposedLayout UnpinnedTabContainerViewLayout::CalculateVerticalLayout(
+@@ -287,6 +293,108 @@ views::ProposedLayout UnpinnedTabContain
      layouts.child_layouts.emplace_back(child, true, bounds);
      height += bounds.height() + kTabVerticalPadding;
      width = std::max(width, bounds.width() + bounds.x());
@@ -3089,8 +2999,6 @@ index 366f3e3..91da61d 100644
    }
  
    if (height > 0) {
-diff --git a/chrome/browser/ui/views/tabs/tab.cc b/chrome/browser/ui/views/tabs/tab.cc
-index 361b248..2ae7173 100644
 --- a/chrome/browser/ui/views/tabs/tab.cc
 +++ b/chrome/browser/ui/views/tabs/tab.cc
 @@ -29,6 +29,7 @@
@@ -3101,7 +3009,7 @@ index 361b248..2ae7173 100644
  #include "chrome/browser/ui/layout_constants.h"
  #include "chrome/browser/ui/tab_contents/core_tab_helper.h"
  #include "chrome/browser/ui/tabs/alert/tab_alert_controller.h"
-@@ -1606,6 +1607,10 @@ void Tab::OnTabDataChanged(TabChangeType tab_change_type,
+@@ -1606,6 +1607,10 @@ void Tab::OnTabDataChanged(TabChangeType
    if (did_title_change) {
      title_->SetText(title);
    }
@@ -3112,11 +3020,9 @@ index 361b248..2ae7173 100644
  
    const bool did_alert_state_change = previous_alert_state != data_.alert_state;
    if (did_alert_state_change) {
-diff --git a/chrome/browser/ui/views/tabs/tab/tab_close_button.cc b/chrome/browser/ui/views/tabs/tab/tab_close_button.cc
-index 25b6258..c4e844a 100644
 --- a/chrome/browser/ui/views/tabs/tab/tab_close_button.cc
 +++ b/chrome/browser/ui/views/tabs/tab/tab_close_button.cc
-@@ -118,6 +118,14 @@ void TabCloseButton::SetColors(TabStyle::TabColors colors) {
+@@ -118,6 +118,14 @@ void TabCloseButton::SetColors(TabStyle:
    OnPropertyChanged(&colors_, views::PropertyEffects::kPaint);
  }
  
@@ -3131,7 +3037,7 @@ index 25b6258..c4e844a 100644
  views::View* TabCloseButton::GetTooltipHandlerForPoint(
      const gfx::Point& point) {
    // Tab close button has no children, so tooltip handler should be the same
-@@ -209,9 +217,11 @@ bool TabCloseButton::GetHitTestMask(SkPath* mask) const {
+@@ -209,9 +217,11 @@ bool TabCloseButton::GetHitTestMask(SkPa
    return true;
  }
  void TabCloseButton::UpdateIcon() {
@@ -3146,11 +3052,9 @@ index 25b6258..c4e844a 100644
  
    SetImageModel(views::Button::STATE_NORMAL,
                  ui::ImageModel::FromVectorIcon(
-diff --git a/chrome/browser/ui/views/tabs/tab/tab_close_button.h b/chrome/browser/ui/views/tabs/tab/tab_close_button.h
-index 957cc62..09ec27e 100644
 --- a/chrome/browser/ui/views/tabs/tab/tab_close_button.h
 +++ b/chrome/browser/ui/views/tabs/tab/tab_close_button.h
-@@ -22,6 +22,10 @@ class TabCloseButton : public views::LabelButton,
+@@ -22,6 +22,10 @@ class TabCloseButton : public views::Lab
   public:
    using MouseEventCallback =
        base::RepeatingCallback<void(views::View*, const ui::MouseEvent&)>;
@@ -3161,7 +3065,7 @@ index 957cc62..09ec27e 100644
  
    // The mouse_event callback will be called for every mouse event to allow
    // middle clicks to be handled by the parent.
-@@ -39,6 +43,7 @@ class TabCloseButton : public views::LabelButton,
+@@ -39,6 +43,7 @@ class TabCloseButton : public views::Lab
    // changes (this class does not track tab activation state), and when the
    // theme changes.
    void SetColors(TabStyle::TabColors colors);
@@ -3169,7 +3073,7 @@ index 957cc62..09ec27e 100644
  
    // views::LabelButton:
    View* GetTooltipHandlerForPoint(const gfx::Point& point) override;
-@@ -66,6 +71,7 @@ class TabCloseButton : public views::LabelButton,
+@@ -66,6 +71,7 @@ class TabCloseButton : public views::Lab
    MouseEventCallback mouse_event_callback_;
  
    TabStyle::TabColors colors_;
@@ -3177,11 +3081,9 @@ index 957cc62..09ec27e 100644
  };
  
  #endif  // CHROME_BROWSER_UI_VIEWS_TABS_TAB_TAB_CLOSE_BUTTON_H_
-diff --git a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
-index 664e19f..aa0acc7 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip_layout_helper.cc
-@@ -434,6 +434,12 @@ bool TabStripLayoutHelper::SlotIsCollapsedTab(int i) const {
+@@ -434,6 +434,12 @@ bool TabStripLayoutHelper::SlotIsCollaps
    // Otherwise, a tab is only collapsed if it is in an explicitly collapsed
    // group.
    const std::optional<tab_groups::TabGroupId> id = slots_[i].view->group();
@@ -3196,11 +3098,9 @@ index 664e19f..aa0acc7 100644
 +  const Tab* const tab = static_cast<const Tab*>(slots_[i].view.get());
 +  return tab->IsDiscarded();
  }
-diff --git a/chrome/browser/ui/views/tabs/vertical/vertical_new_tab_button.cc b/chrome/browser/ui/views/tabs/vertical/vertical_new_tab_button.cc
-index 720425b..39804b7 100644
 --- a/chrome/browser/ui/views/tabs/vertical/vertical_new_tab_button.cc
 +++ b/chrome/browser/ui/views/tabs/vertical/vertical_new_tab_button.cc
-@@ -31,6 +31,7 @@ VerticalNewTabButton::VerticalNewTabButton(BrowserWindowInterface* browser)
+@@ -31,6 +31,7 @@ VerticalNewTabButton::VerticalNewTabButt
    SetImageLabelSpacing(kBigPadding);
    SetShouldShowLabel(true);
    SetLabelText(l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
@@ -3208,8 +3108,6 @@ index 720425b..39804b7 100644
    SetPreferredSize(
        gfx::Size(-1, GetLayoutConstant(LayoutConstant::kVerticalTabHeight)));
  }
-diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
-index e2e4c0a..3e614c5 100644
 --- a/components/tabs/public/tab_context_menu_command.h
 +++ b/components/tabs/public/tab_context_menu_command.h
 @@ -43,6 +43,7 @@ enum TabContextMenuCommand {

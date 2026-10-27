@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/cocoa/main_menu_builder.mm
 +++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
-@@ -302,19 +302,11 @@ NSMenuItem* BuildViewMenu(NSApplication*
+@@ -302,14 +302,6 @@ NSMenuItem* BuildViewMenu(NSApplication*
                    .command_id(IDC_TOGGLE_FULLSCREEN_TOOLBAR),
                Item(IDS_CONTEXT_MENU_SHOW_FULL_URLS)
                    .command_id(IDC_SHOW_FULL_URLS),
@@ -12,14 +12,9 @@
 -                   .command_id(IDC_SHOW_AI_MODE_OMNIBOX_BUTTON),
 -              Item(IDS_CONTEXT_MENU_SHOW_SEARCH_TOOLS)
 -                  .command_id(IDC_SHOW_SEARCH_TOOLS),
-               Item(IDS_SWITCH_TO_VERTICAL_TAB_MAC)
-                   .command_id(IDC_TOGGLE_VERTICAL_TABS),
-              Item(IDS_VERTICAL_TABS_VIEW_MENU_TOGGLE_COLLAPSE)
-                  .command_id(IDC_TOGGLE_VERTICAL_TABS_COLLAPSE)
-                  .key_equivalent(@"L", NSEventModifierFlagCommand),
-               Item(IDS_CUSTOMIZE_TOUCH_BAR)
-                   .tag(IDC_CUSTOMIZE_TOUCH_BAR)
-                   .action(@selector(toggleTouchBarCustomizationPalette:))
+                Item(IDS_SWITCH_TO_VERTICAL_TAB_MAC)
+                    .command_id(IDC_TOGGLE_VERTICAL_TABS),
+               Item(IDS_VERTICAL_TABS_VIEW_MENU_TOGGLE_COLLAPSE)
 @@ -517,7 +509,8 @@ NSMenuItem* BuildTabMenu(NSApplication*
  
    // clang-format off
