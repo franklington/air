@@ -1,8 +1,8 @@
-Index: src/chrome/app/generated_resources.grd
-===================================================================
---- src.orig/chrome/app/generated_resources.grd
-+++ src/chrome/app/generated_resources.grd
-@@ -12613,7 +12613,7 @@ Check your passwords anytime in <ph name
+diff --git a/chrome/app/generated_resources.grd b/chrome/app/generated_resources.grd
+index 0d8fd82..3e3f305 100644
+--- a/chrome/app/generated_resources.grd
++++ b/chrome/app/generated_resources.grd
+@@ -12830,7 +12830,7 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
          </message>
        </if>
        <message name="IDS_TAB_SEARCH_SEARCH_TABS" desc="The label on the tab search search filed when user input is empty.">
@@ -11,10 +11,10 @@ Index: src/chrome/app/generated_resources.grd
        </message>
        <message name="IDS_TAB_SEARCH_NO_RESULTS_FOUND" desc="Indicator when no tabs are found filtered by user search input.">
          No Results Found
-Index: src/chrome/browser/resources/tab_search/tab_search.html
-===================================================================
---- src.orig/chrome/browser/resources/tab_search/tab_search.html
-+++ src/chrome/browser/resources/tab_search/tab_search.html
+diff --git a/chrome/browser/resources/tab_search/tab_search.html b/chrome/browser/resources/tab_search/tab_search.html
+index cc36d1f..5f88cfe 100644
+--- a/chrome/browser/resources/tab_search/tab_search.html
++++ b/chrome/browser/resources/tab_search/tab_search.html
 @@ -12,7 +12,7 @@
  
      html,
@@ -24,11 +24,11 @@ Index: src/chrome/browser/resources/tab_search/tab_search.html
      }
  
      body {
-Index: src/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
-===================================================================
---- src.orig/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
-+++ src/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
-@@ -19,6 +19,8 @@ export interface TabSearchApiProxy {
+diff --git a/chrome/browser/resources/tab_search/tab_search_api_proxy.ts b/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
+index 9f7dd6e..04c7462 100644
+--- a/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
++++ b/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
+@@ -24,6 +24,8 @@ export interface TabSearchApiProxy {
  
    closeWebUiTab(): void;
  
@@ -37,7 +37,7 @@ Index: src/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
    getProfileData(): Promise<{profileData: ProfileData}>;
  
    getIsSplit(): Promise<{isSplit: boolean}>;
-@@ -56,6 +58,10 @@ export class TabSearchApiProxyImpl imple
+@@ -65,6 +67,10 @@ export class TabSearchApiProxyImpl implements TabSearchApiProxy {
      this.handler.closeWebUiTab();
    }
  
@@ -48,10 +48,10 @@ Index: src/chrome/browser/resources/tab_search/tab_search_api_proxy.ts
    getProfileData() {
      return this.handler.getProfileData();
    }
-Index: src/chrome/browser/resources/tab_search/tab_search_page.css
-===================================================================
---- src.orig/chrome/browser/resources/tab_search/tab_search_page.css
-+++ src/chrome/browser/resources/tab_search/tab_search_page.css
+diff --git a/chrome/browser/resources/tab_search/tab_search_page.css b/chrome/browser/resources/tab_search/tab_search_page.css
+index f4028a1..a539759 100644
+--- a/chrome/browser/resources/tab_search/tab_search_page.css
++++ b/chrome/browser/resources/tab_search/tab_search_page.css
 @@ -12,6 +12,11 @@
   * #include=mwb-shared-style-lit
   * #css_wrapper_metadata_end */
@@ -64,7 +64,7 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.css
  #searchField {
    align-items: center;
    background-color: var(--mwb-background-color);
-@@ -82,10 +87,61 @@
+@@ -87,10 +92,61 @@
  #no-results {
    color: var(--cr-primary-text-color);
    font-size: var(--mwb-primary-text-font-size);
@@ -127,11 +127,11 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.css
  #feedback-text {
    color: var(--cr-primary-text-color);
    font-size: var(--mwb-primary-text-font-size);
-Index: src/chrome/browser/resources/tab_search/tab_search_page.html.ts
-===================================================================
---- src.orig/chrome/browser/resources/tab_search/tab_search_page.html.ts
-+++ src/chrome/browser/resources/tab_search/tab_search_page.html.ts
-@@ -97,7 +97,20 @@ export function getHtml(this: TabSearchP
+diff --git a/chrome/browser/resources/tab_search/tab_search_page.html.ts b/chrome/browser/resources/tab_search/tab_search_page.html.ts
+index f132556..54b45a5 100644
+--- a/chrome/browser/resources/tab_search/tab_search_page.html.ts
++++ b/chrome/browser/resources/tab_search/tab_search_page.html.ts
+@@ -124,7 +124,20 @@ export function getHtml(this: TabSearchPageElement) {
      </selectable-lazy-list>
    </div>
    <div id="no-results" ?hidden="${this.filteredItems_.length > 0}">
@@ -153,32 +153,32 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.html.ts
    </div>
  </div>
  <!--_html_template_end_-->`;
-Index: src/chrome/browser/resources/tab_search/tab_search_page.ts
-===================================================================
---- src.orig/chrome/browser/resources/tab_search/tab_search_page.ts
-+++ src/chrome/browser/resources/tab_search/tab_search_page.ts
-@@ -99,6 +99,9 @@ export class TabSearchPageElement extend
-       searchOptions_: {type: Object},
+diff --git a/chrome/browser/resources/tab_search/tab_search_page.ts b/chrome/browser/resources/tab_search/tab_search_page.ts
+index bed19b1..be57a55 100644
+--- a/chrome/browser/resources/tab_search/tab_search_page.ts
++++ b/chrome/browser/resources/tab_search/tab_search_page.ts
+@@ -127,6 +127,9 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
        recentlyClosedDefaultItemDisplayCount_: {type: Number},
        activeSelectionId_: {type: String},
+       webuiRoundedIconsEnabled_: {type: Boolean},
 +      airHasQuery_: {type: Boolean},
 +      airQueryText_: {type: String},
 +      airQueryIsUrl_: {type: Boolean},
      };
    }
  
-@@ -108,6 +111,9 @@ export class TabSearchPageElement extend
+@@ -136,6 +139,9 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
    protected accessor listItemSize_: number|undefined;
    protected accessor searchQueryMaxLength_: number = SEARCH_QUERY_MAX_LENGTH;
-   protected accessor filteredItems_: Array<TitleItem|TabData|TabGroupData> = [];
+   protected accessor activeDescendantEnabled_: boolean = false;
 +  protected accessor airHasQuery_: boolean = false;
 +  protected accessor airQueryText_: string = '';
 +  protected accessor airQueryIsUrl_: boolean = false;
-   private accessor searchOptions_: SearchOptions = {
-     includeScore: true,
-     includeMatches: true,
-@@ -249,6 +255,11 @@ export class TabSearchPageElement extend
-   override onSearchTermInput() {
+   protected accessor filteredItems_:
+       Array<TitleItem|TabData|TabGroupData|SplitViewData> = [];
+   private accessor searchOptions_:
+@@ -291,6 +297,11 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
+     this.activeDescendantEnabled_ = false;
      this.hasSearchText = this.getSearchInput().value !== '';
      this.searchText_ = this.getSearchInput().value;
 +    this.airHasQuery_ = this.searchText_.length > 0;
@@ -189,7 +189,7 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.ts
      // Reset the selected item whenever a search query is provided.
      // updateFilteredTabs_ will set the correct tab index for initial selection.
      const tabsList = this.$.tabsList;
-@@ -478,6 +489,37 @@ export class TabSearchPageElement extend
+@@ -638,6 +649,37 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
          Math.round(Date.now() - this.windowShownTimestamp_));
    }
  
@@ -226,8 +226,8 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.ts
 +
    protected onItemClose_(e: Event) {
      performance.mark('tab_search:close_tab:metric_begin');
-     const target = e.currentTarget as TabSearchItemElement;
-@@ -607,7 +649,18 @@ export class TabSearchPageElement extend
+     const target =
+@@ -829,7 +871,18 @@ export class TabSearchPageElement extends TabSearchSearchFieldBase {
      }
  
      if (this.$.tabsList.selected === -1) {
@@ -247,70 +247,84 @@ Index: src/chrome/browser/resources/tab_search/tab_search_page.ts
        return;
      }
  
-Index: src/chrome/browser/ui/browser_command_controller.cc
-===================================================================
---- src.orig/chrome/browser/ui/browser_command_controller.cc
-+++ src/chrome/browser/ui/browser_command_controller.cc
-@@ -703,7 +703,7 @@ bool BrowserCommandController::ExecuteCo
+diff --git a/chrome/browser/ui/browser_command_controller.cc b/chrome/browser/ui/browser_command_controller.cc
+index b2aac1b..17ca2a8 100644
+--- a/chrome/browser/ui/browser_command_controller.cc
++++ b/chrome/browser/ui/browser_command_controller.cc
+@@ -771,7 +771,8 @@ void BrowserCommandController::HandleCommandWithDisposition(
        CloseWindow(browser_);
        break;
      case IDC_NEW_TAB: {
--      NewTab(browser_);
+-      NewTab(browser_, NewTabTypes::kNewTabCommand);
++      // Air: Cmd+T opens the command bar instead of a blank tab.
 +      ShowTabSearch(browser_);
        break;
      }
      case IDC_NEW_TAB_TO_RIGHT: {
-Index: src/chrome/browser/ui/views/tab_search_bubble_host.cc
-===================================================================
---- src.orig/chrome/browser/ui/views/tab_search_bubble_host.cc
-+++ src/chrome/browser/ui/views/tab_search_bubble_host.cc
-@@ -199,14 +199,20 @@ bool TabSearchBubbleHost::ShowTabSearchB
+diff --git a/chrome/browser/ui/views/tab_search_bubble_host.cc b/chrome/browser/ui/views/tab_search_bubble_host.cc
+index 01a6b7e..fa59785 100644
+--- a/chrome/browser/ui/views/tab_search_bubble_host.cc
++++ b/chrome/browser/ui/views/tab_search_bubble_host.cc
+@@ -201,15 +201,32 @@ bool TabSearchBubbleHost::ShowTabSearchBubble(
        },
        *bubble_created_time_));
  
 -  const tabs::TabSearchPosition position =
 -      tabs::GetTabSearchPosition(browser_window_interface_);
-+  // Air: show centered at the top of the browser window, spotlight-style.
-+  gfx::Rect anchor_rect;
-+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(
-+      browser_window_interface_->GetBrowserForMigrationOnly());
-+  if (browser_view && browser_view->GetWidget()) {
-+    gfx::Rect window_bounds =
-+        browser_view->GetWidget()->GetWindowBoundsInScreen();
-+    const int kTopOffset = 80;
-+    anchor_rect = gfx::Rect(window_bounds.x() + window_bounds.width() / 2,
-+                            window_bounds.y() + kTopOffset, 1, 1);
-+  }
-   webui_bubble_manager_->ShowBubble(
--      std::nullopt,
+-  webui_bubble_manager_->ShowBubble(
+-      button_,
 -      (position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip ||
 -       position == tabs::TabSearchPosition::kVerticalTabstrip)
 -          ? views::BubbleBorder::TOP_LEFT
 -          : views::BubbleBorder::TOP_RIGHT,
-+      anchor_rect.IsEmpty() ? std::optional<gfx::Rect>() : anchor_rect,
-+      views::BubbleBorder::TOP_CENTER,
-       kTabSearchBubbleElementId);
+-      kTabSearchBubbleElementId);
++  // Air: show centered at the top of the browser window, spotlight-style.
++  gfx::Rect anchor_rect;
++  BrowserView* const browser_view =
++      BrowserView::GetBrowserViewForBrowser(browser_window_interface_);
++  if (browser_view && browser_view->GetWidget()) {
++    const gfx::Rect window_bounds =
++        browser_view->GetWidget()->GetWindowBoundsInScreen();
++    constexpr int kTopOffset = 80;
++    anchor_rect = gfx::Rect(window_bounds.x() + window_bounds.width() / 2,
++                            window_bounds.y() + kTopOffset, 1, 1);
++  }
++  if (!anchor_rect.IsEmpty()) {
++    webui_bubble_manager_->ShowBubble(anchor_rect,
++                                      views::BubbleBorder::TOP_CENTER,
++                                      kTabSearchBubbleElementId);
++  } else {
++    const tabs::TabSearchPosition position =
++        tabs::GetTabSearchPosition(browser_window_interface_);
++    webui_bubble_manager_->ShowBubble(
++        button_,
++        (position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip ||
++         position == tabs::TabSearchPosition::kVerticalTabstrip)
++            ? views::BubbleBorder::TOP_LEFT
++            : views::BubbleBorder::TOP_RIGHT,
++        kTabSearchBubbleElementId);
++  }
  
    auto* tracker =
-Index: src/chrome/browser/ui/webui/tab_search/tab_search.mojom
-===================================================================
---- src.orig/chrome/browser/ui/webui/tab_search/tab_search.mojom
-+++ src/chrome/browser/ui/webui/tab_search/tab_search.mojom
-@@ -211,6 +211,10 @@ interface PageHandler {
- 
+       feature_engagement::TrackerFactory::GetForBrowserContext(profile_);
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search.mojom b/chrome/browser/ui/webui/tab_search/tab_search.mojom
+index ea657bb..f048bcd 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search.mojom
++++ b/chrome/browser/ui/webui/tab_search/tab_search.mojom
+@@ -277,6 +277,9 @@ interface PageHandler {
    // Notify the backend that the UI is ready to be shown.
    MaybeShowUI();
-+
+ 
 +  // Air: close the panel and open a new tab. If |query| is non-empty, open a
 +  // Google search for that query instead.
 +  OpenNewTab(string query);
  };
  
  // WebUI-side handler for requests from the browser.
-Index: src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
-===================================================================
---- src.orig/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
-+++ src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
+index 5e5908b..4b84003 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
 @@ -16,6 +16,9 @@
  
  #include "base/check.h"
@@ -321,7 +335,7 @@ Index: src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
  #include "base/metrics/histogram_functions.h"
  #include "base/strings/utf_string_conversions.h"
  #include "base/time/time.h"
-@@ -385,6 +388,38 @@ void TabSearchPageHandler::MaybeShowUI()
+@@ -462,6 +465,38 @@ void TabSearchPageHandler::MaybeShowUI() {
    }
  }
  
@@ -360,11 +374,11 @@ Index: src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc
  tab_search::mojom::ProfileDataPtr TabSearchPageHandler::CreateProfileData() {
    auto profile_data = tab_search::mojom::ProfileData::New();
  
-Index: src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
-===================================================================
---- src.orig/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
-+++ src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
-@@ -85,6 +85,7 @@ class TabSearchPageHandler
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
+index c3e2e08..111fd18 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
++++ b/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
+@@ -93,6 +93,7 @@ class TabSearchPageHandler
    void SaveRecentlyClosedExpandedPref(bool expanded) override;
    void StartTabGroupTutorial() override;
    void MaybeShowUI() override;
@@ -372,11 +386,11 @@ Index: src/chrome/browser/ui/webui/tab_search/tab_search_page_handler.h
  
    // TabStripApiBatchedObserver:
    void OnTabEvents(
-Index: src/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-===================================================================
---- src.orig/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-+++ src/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
-@@ -114,8 +114,7 @@ TabSearchUI::TabSearchUI(content::WebUI*
+diff --git a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
+index 7bd2dc3..f290ac5 100644
+--- a/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
++++ b/chrome/browser/ui/webui/tab_search/tab_search_ui.cc
+@@ -129,8 +129,7 @@ TabSearchUI::TabSearchUI(content::WebUI* web_ui)
    source->AddResourcePath("alert_indicators/tab_media_glic_active.svg",
                            IDR_GLIC_TAB_MEDIA_GLIC_ACTIVE);
  

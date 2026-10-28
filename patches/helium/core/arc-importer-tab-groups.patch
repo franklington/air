@@ -1,7 +1,7 @@
-Index: src/chrome/browser/importer/BUILD.gn
-===================================================================
---- src.orig/chrome/browser/importer/BUILD.gn
-+++ src/chrome/browser/importer/BUILD.gn
+diff --git a/chrome/browser/importer/BUILD.gn b/chrome/browser/importer/BUILD.gn
+index e7fee4d..06abe82 100644
+--- a/chrome/browser/importer/BUILD.gn
++++ b/chrome/browser/importer/BUILD.gn
 @@ -41,6 +41,8 @@ source_set("impl") {
    public_deps = [ "//chrome/browser:browser_public_dependencies" ]
  
@@ -29,11 +29,12 @@ Index: src/chrome/browser/importer/BUILD.gn
    ]
  
    if (is_win) {
-Index: src/chrome/browser/importer/arc_tab_group_importer.cc
-===================================================================
+diff --git a/chrome/browser/importer/arc_tab_group_importer.cc b/chrome/browser/importer/arc_tab_group_importer.cc
+new file mode 100644
+index 0000000..43170eb
 --- /dev/null
-+++ src/chrome/browser/importer/arc_tab_group_importer.cc
-@@ -0,0 +1,315 @@
++++ b/chrome/browser/importer/arc_tab_group_importer.cc
+@@ -0,0 +1,324 @@
 +// Copyright 2026 The Helium Authors
 +// You can use, redistribute, and/or modify this source code under
 +// the terms of the GPL-3.0 license that can be found in the LICENSE file.
@@ -54,8 +55,8 @@ Index: src/chrome/browser/importer/arc_tab_group_importer.cc
 +#include "base/values.h"
 +#include "chrome/browser/profiles/profile.h"
 +#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
-+#include "chrome/browser/ui/browser.h"
-+#include "chrome/browser/ui/browser_finder.h"
++#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
++#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 +#include "chrome/browser/ui/tabs/saved_tab_groups/tab_group_action_context_desktop.h"
 +#include "components/saved_tab_groups/public/saved_tab_group.h"
 +#include "components/saved_tab_groups/public/saved_tab_group_tab.h"
@@ -257,7 +258,16 @@ Index: src/chrome/browser/importer/arc_tab_group_importer.cc
 +    return;
 +  }
 +
-+  Browser* browser = chrome::FindBrowserWithProfile(profile);
++  BrowserWindowInterface* browser = nullptr;
++  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
++      [profile, &browser](BrowserWindowInterface* candidate) {
++        if (candidate->GetProfile() == profile &&
++            candidate->GetType() == BrowserWindowInterface::TYPE_NORMAL) {
++          browser = candidate;
++          return false;
++        }
++        return true;
++      });
 +  if (!browser) {
 +    LOG(WARNING) << "arc_tab_group_importer: no active browser";
 +    return;
@@ -349,10 +359,11 @@ Index: src/chrome/browser/importer/arc_tab_group_importer.cc
 +}
 +
 +}  // namespace arc_importer
-Index: src/chrome/browser/importer/arc_tab_group_importer.h
-===================================================================
+diff --git a/chrome/browser/importer/arc_tab_group_importer.h b/chrome/browser/importer/arc_tab_group_importer.h
+new file mode 100644
+index 0000000..0e2c489
 --- /dev/null
-+++ src/chrome/browser/importer/arc_tab_group_importer.h
++++ b/chrome/browser/importer/arc_tab_group_importer.h
 @@ -0,0 +1,22 @@
 +// Copyright 2026 The Helium Authors
 +// You can use, redistribute, and/or modify this source code under
@@ -376,10 +387,10 @@ Index: src/chrome/browser/importer/arc_tab_group_importer.h
 +}  // namespace arc_importer
 +
 +#endif  // CHROME_BROWSER_IMPORTER_ARC_TAB_GROUP_IMPORTER_H_
-Index: src/chrome/browser/importer/brave_external_process_importer_host.cc
-===================================================================
---- src.orig/chrome/browser/importer/brave_external_process_importer_host.cc
-+++ src/chrome/browser/importer/brave_external_process_importer_host.cc
+diff --git a/chrome/browser/importer/brave_external_process_importer_host.cc b/chrome/browser/importer/brave_external_process_importer_host.cc
+index 96ff02c..9e4e5bc 100644
+--- a/chrome/browser/importer/brave_external_process_importer_host.cc
++++ b/chrome/browser/importer/brave_external_process_importer_host.cc
 @@ -6,9 +6,11 @@
  #include "chrome/browser/importer/brave_external_process_importer_host.h"
  
@@ -392,7 +403,7 @@ Index: src/chrome/browser/importer/brave_external_process_importer_host.cc
  
  BraveExternalProcessImporterHost::BraveExternalProcessImporterHost()
      : weak_ptr_factory_(this) {}
-@@ -33,6 +35,13 @@ void BraveExternalProcessImporterHost::N
+@@ -33,6 +35,13 @@ void BraveExternalProcessImporterHost::NotifyImportEnded() {
    // Force tests to fail if |this| is deleted.
    DCHECK(weak_ptr_factory_.GetWeakPtr());
  
@@ -406,11 +417,11 @@ Index: src/chrome/browser/importer/brave_external_process_importer_host.cc
    // Otherwise, notifying here and importing is finished.
    ExternalProcessImporterHost::NotifyImportEnded();
  }
-Index: src/chrome/utility/importer/arc_sidebar_importer.cc
-===================================================================
---- src.orig/chrome/utility/importer/arc_sidebar_importer.cc
-+++ src/chrome/utility/importer/arc_sidebar_importer.cc
-@@ -160,49 +160,6 @@ void WalkItem(const std::string& item_id
+diff --git a/chrome/utility/importer/arc_sidebar_importer.cc b/chrome/utility/importer/arc_sidebar_importer.cc
+index 6d4e2d9..eaf19cf 100644
+--- a/chrome/utility/importer/arc_sidebar_importer.cc
++++ b/chrome/utility/importer/arc_sidebar_importer.cc
+@@ -160,49 +160,6 @@ void WalkItem(const std::string& item_id,
    }
  }
  
@@ -460,7 +471,7 @@ Index: src/chrome/utility/importer/arc_sidebar_importer.cc
  }  // namespace
  
  ArcSidebarImporter::ArcSidebarImporter() = default;
-@@ -282,7 +239,8 @@ void ArcSidebarImporter::ImportBookmarks
+@@ -282,7 +239,8 @@ void ArcSidebarImporter::ImportBookmarksImpl() {
      return;
    }
  
@@ -470,7 +481,7 @@ Index: src/chrome/utility/importer/arc_sidebar_importer.cc
    std::unordered_set<std::string> visited_ids;
    std::vector<user_data_importer::ImportedBookmarkEntry> bookmarks;
    const auto* top_apps_ids = data_container->FindList("topAppsContainerIDs");
-@@ -304,33 +262,6 @@ void ArcSidebarImporter::ImportBookmarks
+@@ -304,33 +262,6 @@ void ArcSidebarImporter::ImportBookmarksImpl() {
      }
    }
  

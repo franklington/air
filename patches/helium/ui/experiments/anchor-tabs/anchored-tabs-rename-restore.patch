@@ -1,8 +1,10 @@
+diff --git a/chrome/app/generated_resources.grd b/chrome/app/generated_resources.grd
+index 38156f6..4f63662 100644
 --- a/chrome/app/generated_resources.grd
 +++ b/chrome/app/generated_resources.grd
-@@ -12253,6 +12253,9 @@ Check your passwords anytime in <ph name
-         <message name="IDS_TAB_CXMENU_HIBERNATE" desc="The label of the 'Hibernate' Tab context menu item.">
-           Hibernate
+@@ -12416,6 +12416,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
+         <message name="IDS_TAB_CXMENU_COPY_URLS" desc="The label of the 'Copy URLs' Tab context menu item.">
+           Copy URLs
          </message>
 +        <message name="IDS_TAB_CXMENU_RENAMETAB" desc="The label of the 'Rename tab' context menu item and rename-tab dialog title.">
 +          Rename tab
@@ -10,9 +12,9 @@
          <message name="IDS_TAB_CXMENU_CLOSETAB" desc="The label of the tab context menu item for closing one or more tabs.">
            Close
          </message>
-@@ -12322,6 +12325,9 @@ Check your passwords anytime in <ph name
-         <message name="IDS_TAB_CXMENU_REMOVE_TAB_FROM_GROUP" desc="The label of the tab context menu item for removing one or more tabs from the groups that contain them.">
-           Remove from group
+@@ -12500,6 +12503,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
+         <message name="IDS_TAB_CXMENU_FOCUS_TABS" desc="The label of the tab context menu item for focusing one or more tabs. [ICU Syntax]">
+           {NUM_TABS, plural, =1 {Focus tab} other {Focus # tabs}}
          </message>
 +        <message name="IDS_TAB_RENAME_DIALOG_PLACEHOLDER" desc="Placeholder text shown in the rename-tab textfield.">
 +          New tab name
@@ -20,9 +22,9 @@
          <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
            {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Google News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Google News</ex></ph>" and 1 other tab} other {"<ph name="TAB_TITLE">$1<ex>Google News</ex></ph>" and # other tabs}}
          </message>
-@@ -12375,6 +12381,12 @@ Check your passwords anytime in <ph name
-         <message name="IDS_TAB_CXMENU_HIBERNATE" desc="In Title Case: The label of the 'Hibernate' Tab context menu item.">
-           Hibernate
+@@ -12562,6 +12568,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Google
+         <message name="IDS_TAB_CXMENU_COPY_URLS" desc="In Title Case: The label of the 'Copy URLs' Tab context menu item.">
+           Copy URLs
          </message>
 +        <message name="IDS_TAB_CXMENU_RENAMETAB" desc="In Title Case: The label of the 'Rename Tab' context menu item and rename-tab dialog title.">
 +          Rename Tab
@@ -33,27 +35,29 @@
          <message name="IDS_TAB_CXMENU_CLOSETAB" desc="In Title Case: The label of the tab context menu item for closing one or more tabs.">
            Close
          </message>
+diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
+index 64b19f7..b1f1708 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -67,6 +67,7 @@
+@@ -73,6 +73,7 @@
  #include "chrome/browser/ui/startup/startup_browser_creator.h"
  #include "chrome/browser/ui/startup/startup_tab.h"
  #include "chrome/browser/ui/startup/startup_types.h"
 +#include "chrome/browser/ui/tab_ui_helper.h"
  #include "chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.h"
+ #include "chrome/browser/ui/tabs/tab_enums.h"
  #include "chrome/browser/ui/tabs/tab_group_model.h"
- #include "chrome/browser/ui/tabs/tab_strip_model.h"
-@@ -410,6 +411,8 @@ class SessionRestoreImpl : public Browse
+@@ -496,6 +497,8 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
        web_contents->GetController().LoadIfNecessary();
      }
  
 +    TabUIHelper::RestoreCustomTitleFromExtraData(web_contents, tab.extra_data);
 +
      if (use_new_window) {
-       browser->tab_strip_model()->ActivateTabAt(
+       browser->GetTabStripModel()->ActivateTabAt(
            0, TabStripUserGestureDetails(
-@@ -1023,6 +1026,8 @@ class SessionRestoreImpl : public Browse
-         tab.extra_data, true /* from_session_restore */, is_active_browser);
+@@ -1170,6 +1173,8 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+             : chrome::RestoredTabLoadPolicy::kDeferUntilActivation);
      DCHECK(web_contents);
  
 +    TabUIHelper::RestoreCustomTitleFromExtraData(web_contents, tab.extra_data);
@@ -61,9 +65,11 @@
      RestoredTab restored_tab(web_contents, is_selected_tab,
                               tab.extension_app_id.empty(), tab.pinned,
                               new_group, tab.split_id);
+diff --git a/chrome/browser/sessions/session_service.cc b/chrome/browser/sessions/session_service.cc
+index 2293349..0175af6 100644
 --- a/chrome/browser/sessions/session_service.cc
 +++ b/chrome/browser/sessions/session_service.cc
-@@ -16,6 +16,7 @@
+@@ -17,6 +17,7 @@
  #include "base/debug/dump_without_crashing.h"
  #include "base/functional/bind.h"
  #include "base/metrics/histogram_functions.h"
@@ -71,7 +77,7 @@
  #include "base/values.h"
  #include "build/build_config.h"
  #include "chrome/browser/apps/app_service/launch_utils.h"
-@@ -44,6 +45,7 @@
+@@ -47,6 +48,7 @@
  #include "chrome/browser/ui/startup/profile_launch_observer.h"
  #include "chrome/browser/ui/startup/startup_browser_creator.h"
  #include "chrome/browser/ui/startup/startup_tab.h"
@@ -79,15 +85,15 @@
  #include "chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.h"
  #include "chrome/browser/ui/tabs/tab_strip_model.h"
  #include "chrome/browser/ui/ui_features.h"
-@@ -57,6 +59,7 @@
- #include "components/sessions/core/session_constants.h"
+@@ -63,6 +65,7 @@
  #include "components/sessions/core/session_types.h"
  #include "components/sessions/core/tab_restore_service.h"
+ #include "components/tab_groups/tab_group_id.h"
 +#include "components/tabs/public/tab_interface.h"
  #include "content/public/browser/navigation_details.h"
  #include "content/public/browser/navigation_entry.h"
- #include "content/public/browser/session_storage_namespace.h"
-@@ -635,6 +638,17 @@ void SessionService::BuildCommandsForTab
+ #include "content/public/browser/session_storage_namespace_handle.h"
+@@ -681,6 +684,17 @@ void SessionService::BuildCommandsForTab(
      command_storage_manager()->AppendRebuildCommand(
          sessions::CreateSplitTabCommand(session_id, std::move(split)));
    }
@@ -105,20 +111,24 @@
  }
  
  void SessionService::ScheduleResetCommands() {
+diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
+index 23a40a3..1c803d1 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -4217,6 +4217,8 @@ static_library("ui") {
+@@ -3561,6 +3561,8 @@ static_library("ui") {
        "views/helium/frame_corner_radius.h",
-       "views/hover_button_controller.cc",
-       "views/hover_button_controller.h",
+       "views/helium/native_frame_materials.cc",
+       "views/helium/native_frame_materials.h",
 +      "views/helium/tab_rename_dialog.cc",
 +      "views/helium/tab_rename_dialog.h",
-       "views/hung_renderer_view.cc",
-       "views/hung_renderer_view.h",
-       "views/idle_bubble.cc",
+     ]
+ 
+     sources += get_target_outputs(":webui_name_variants")
+diff --git a/chrome/browser/ui/browser_live_tab_context.cc b/chrome/browser/ui/browser_live_tab_context.cc
+index 09ec69b..6a4b513 100644
 --- a/chrome/browser/ui/browser_live_tab_context.cc
 +++ b/chrome/browser/ui/browser_live_tab_context.cc
-@@ -10,6 +10,7 @@
+@@ -11,6 +11,7 @@
  #include <utility>
  
  #include "base/check_deref.h"
@@ -126,23 +136,23 @@
  #include "base/token.h"
  #include "base/uuid.h"
  #include "base/values.h"
-@@ -29,6 +30,7 @@
- #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+@@ -31,6 +32,7 @@
+ #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
  #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
  #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 +#include "chrome/browser/ui/tab_ui_helper.h"
  #include "chrome/browser/ui/tabs/saved_tab_groups/saved_tab_group_utils.h"
  #include "chrome/browser/ui/tabs/tab_group_model.h"
  #include "chrome/browser/ui/tabs/tab_strip_model.h"
-@@ -45,6 +47,7 @@
- #include "components/tab_groups/tab_group_id.h"
+@@ -53,6 +55,7 @@
  #include "components/tab_groups/tab_group_visual_data.h"
+ #include "components/tabs/public/split_tab_data.h"
  #include "components/tabs/public/tab_group.h"
 +#include "components/tabs/public/tab_interface.h"
  #include "content/public/browser/navigation_controller.h"
- #include "content/public/browser/session_storage_namespace.h"
+ #include "content/public/browser/session_storage_namespace_handle.h"
  #include "content/public/browser/web_contents.h"
-@@ -151,8 +154,16 @@ std::map<std::string, std::string> Brows
+@@ -204,8 +207,16 @@ std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab(
      int index) const {
    std::map<std::string, std::string> extra_data;
  
@@ -161,14 +171,16 @@
  
    return extra_data;
  }
-@@ -334,6 +345,7 @@ sessions::LiveTab* BrowserLiveTabContext
+@@ -457,6 +468,7 @@ sessions::LiveTab* BrowserLiveTabContext::AddRestoredTab(
    }
  
    CHECK(web_contents);
 +  TabUIHelper::RestoreCustomTitleFromExtraData(web_contents, tab.extra_data);
  
-   if (performance_manager::policies::CanScheduleLoadForRestoredTabs()) {
-     performance_manager::policies::ScheduleLoadForRestoredTabs({web_contents});
+   if (load_policy == chrome::RestoredTabLoadPolicy::kDeferUntilActivation) {
+     return sessions::ContentLiveTab::GetOrCreateForWebContents(web_contents);
+diff --git a/chrome/browser/ui/tab_ui_helper.cc b/chrome/browser/ui/tab_ui_helper.cc
+index 4e037f5..df74e2d 100644
 --- a/chrome/browser/ui/tab_ui_helper.cc
 +++ b/chrome/browser/ui/tab_ui_helper.cc
 @@ -13,10 +13,15 @@
@@ -184,13 +196,13 @@
  #include "chrome/browser/sessions/session_restore.h"
 +#include "chrome/browser/sessions/session_service.h"
 +#include "chrome/browser/sessions/session_service_factory.h"
+ #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+ #include "chrome/browser/ui/color/chrome_color_id.h"
  #include "chrome/browser/ui/performance_controls/memory_saver_utils.h"
- #include "chrome/browser/ui/tabs/features.h"
- #include "chrome/browser/ui/tabs/public/tab_features.h"
-@@ -25,9 +30,14 @@
- #include "chrome/browser/ui/web_applications/app_browser_controller.h"
- #include "chrome/common/webui_url_constants.h"
+@@ -31,9 +36,14 @@
  #include "chrome/grit/generated_resources.h"
+ #include "components/favicon/content/content_favicon_driver.h"
+ #include "components/favicon/content/content_favicon_util.h"
 +#include "components/favicon/core/favicon_service.h"
 +#include "components/favicon/core/favicon_util.h"
 +#include "components/favicon_base/favicon_types.h"
@@ -201,47 +213,47 @@
 +#include "content/public/browser/favicon_status.h"
  #include "content/public/browser/navigation_controller.h"
  #include "content/public/browser/navigation_entry.h"
- #include "content/public/browser/web_contents.h"
-@@ -111,6 +121,9 @@ base::CallbackListSubscription TabUIHelp
+ #include "content/public/browser/render_frame_host.h"
+@@ -127,6 +137,9 @@ base::CallbackListSubscription TabUIHelper::AddTabUIChangeCallback(
  }
  
  std::u16string TabUIHelper::GetTitle() const {
 +  if (!custom_title_.empty()) {
 +    return custom_title_;
 +  }
-   const tab_groups::SavedTabGroupWebContentsListener* wc_listener =
-       tab().GetTabFeatures()->saved_tab_group_web_contents_listener();
-   if (wc_listener) {
-@@ -188,7 +201,10 @@ ui::ImageModel TabUIHelper::GetFavicon()
+   if (auto* tab_features = tab().GetTabFeatures()) {
+     const tab_groups::SavedTabGroupWebContentsListener* wc_listener =
+         tab_features->saved_tab_group_web_contents_listener();
+@@ -204,8 +217,11 @@ ui::ImageModel TabUIHelper::GetFavicon() {
    if (wc_listener) {
      if (const std::optional<tab_groups::DeferredTabState>& deferred_tab_state =
              wc_listener->deferred_tab_state()) {
+-      retained_favicon_ = gfx::Image();
 -      return deferred_tab_state.value().favicon();
-+      ui::ImageModel favicon = deferred_tab_state.value().favicon();
-+      if (!favicon.IsEmpty()) {
-+        return favicon;
++      ui::ImageModel deferred_favicon = deferred_tab_state.value().favicon();
++      if (!deferred_favicon.IsEmpty()) {
++        retained_favicon_ = gfx::Image();
++        return deferred_favicon;
 +      }
      }
    }
  
-@@ -210,8 +226,14 @@ ui::ImageModel TabUIHelper::GetFavicon()
-   }
- #endif  // !BUILDFLAG(IS_ANDROID)
- 
--  return ui::ImageModel::FromImage(
--      favicon::TabFaviconFromWebContents(web_contents()));
-+  content::NavigationEntry* const entry =
-+      web_contents()->GetController().GetLastCommittedEntry();
-+  gfx::Image favicon = favicon::TabFaviconFromWebContents(web_contents());
-+  if (entry && favicon.IsEmpty()) {
-+    MaybeFetchRestoredFavicon(entry);
+@@ -236,6 +252,14 @@ ui::ImageModel TabUIHelper::GetFavicon() {
+   content::WebContents* const contents = web_contents();
+   const auto* driver = favicon::ContentFaviconDriver::FromWebContents(contents);
+   gfx::Image favicon = favicon::GetTabFaviconMaybeDesaturatedOnError(contents);
++  if (favicon.IsEmpty()) {
++    // Restored or hibernated tabs have no live favicon; load the cached one
++    // from the favicon database so the tab is not shown with a globe.
++    if (content::NavigationEntry* const last_entry =
++            contents->GetController().GetLastCommittedEntry()) {
++      MaybeFetchRestoredFavicon(last_entry);
++    }
 +  }
-+
-+  return ui::ImageModel::FromImage(favicon);
- }
- 
- bool TabUIHelper::ShouldHideThrobber() const {
-@@ -387,3 +409,112 @@ void TabUIHelper::OnTabPinnedStatusChang
+   ui::ImageModel favicon_model;
+   if (!driver || !driver->FaviconIsValid()) {
+     // Cache the model so repeated calls return an equal ImageModel; TabData
+@@ -466,3 +490,112 @@ void TabUIHelper::OnTabPinnedStatusChange(tabs::TabInterface* tab_interface,
    CHECK_EQ(&tab(), tab_interface);
    tab_ui_change_callbacks_.Notify();
  }
@@ -354,6 +366,8 @@
 +base::WeakPtr<TabUIHelper> TabUIHelper::GetWeakPtr() {
 +  return weak_factory_.GetWeakPtr();
 +}
+diff --git a/chrome/browser/ui/tab_ui_helper.h b/chrome/browser/ui/tab_ui_helper.h
+index 8d481e0..da03af8 100644
 --- a/chrome/browser/ui/tab_ui_helper.h
 +++ b/chrome/browser/ui/tab_ui_helper.h
 @@ -5,6 +5,7 @@
@@ -364,7 +378,7 @@
  #include <optional>
  #include <string>
  #include <vector>
-@@ -12,20 +13,28 @@
+@@ -12,6 +13,8 @@
  #include "base/byte_size.h"
  #include "base/callback_list.h"
  #include "base/functional/callback_forward.h"
@@ -373,13 +387,14 @@
  #include "base/types/pass_key.h"
  #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
  #include "components/tabs/public/tab_network_state.h"
- #include "content/public/browser/web_contents_observer.h"
+@@ -19,14 +22,20 @@
+ #include "ui/base/models/image_model.h"
  #include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
+ #include "ui/gfx/image/image.h"
 +#include "url/gurl.h"
+ #include "url/origin.h"
  
- #if !BUILDFLAG(IS_ANDROID)
- class Browser;
- #endif
+ class BrowserUiController;
  
 +namespace favicon_base {
 +struct FaviconImageResult;
@@ -393,9 +408,9 @@
  }  // namespace content
  
  namespace tabs {
-@@ -122,7 +131,20 @@ class TabUIHelper : public tabs::Content
-   void NotifyTabUIChanged(base::PassKey<Browser> pass_key);
- #endif
+@@ -114,7 +123,20 @@ class TabUIHelper : public tabs::ContentsObservingTabFeature {
+ 
+   tabs::TabNetworkState GetTabNetworkState();
  
 +  // Custom tab title. Restore paths pass `persist=false` while rehydrating.
 +  void SetCustomTitle(std::u16string title, bool persist = true);
@@ -414,7 +429,7 @@
    void OnTabPinnedStatusChange(tabs::TabInterface* tab_interface,
                                 bool new_pinned_state);
  
-@@ -134,6 +156,12 @@ class TabUIHelper : public tabs::Content
+@@ -137,6 +159,12 @@ class TabUIHelper : public tabs::ContentsObservingTabFeature {
    base::RepeatingClosureList tab_ui_change_callbacks_;
  
    ui::ScopedUnownedUserData<TabUIHelper> scoped_unowned_user_data_;
@@ -427,26 +442,30 @@
  };
  
  #endif  // CHROME_BROWSER_UI_TAB_UI_HELPER_H_
+diff --git a/chrome/browser/ui/tabs/tab_menu_model.cc b/chrome/browser/ui/tabs/tab_menu_model.cc
+index e8b1e3c..30016aa 100644
 --- a/chrome/browser/ui/tabs/tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/tab_menu_model.cc
-@@ -369,6 +369,14 @@ void TabMenuModel::Build(int index) {
-   // Separator Close Tab items
-   AddSeparator(ui::NORMAL_SEPARATOR);
+@@ -627,6 +627,14 @@ void TabMenuModel::Build(int index) {
+   }
+ #endif
  
 +  // Bulk rename of multiple tabs would be confusing.
 +  if (indices.size() == 1 &&
-+      tab_strip->GetTabGroupForTab(indices.front()).has_value()) {
++      tab_strip_->GetTabGroupForTab(indices.front()).has_value()) {
++    AddSeparator(ui::NORMAL_SEPARATOR);
 +    AddItemWithStringId(TabStripModel::CommandRenameTab,
 +                        IDS_TAB_CXMENU_RENAMETAB);
-+    AddSeparator(ui::NORMAL_SEPARATOR);
 +  }
 +
-   AddItemWithStringId(TabStripModel::CommandDiscard, IDS_TAB_CXMENU_HIBERNATE);
- 
-   AddItemWithStringId(TabStripModel::CommandCloseTab, IDS_TAB_CXMENU_CLOSETAB);
+   AddSeparator(ui::NORMAL_SEPARATOR);
+   AddItemWithStringId(TabStripModel::CommandDiscard,
+                       tab_strip_->IsTabInForeground(index)
+diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
+index aa70851..6e634f3 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
-@@ -80,6 +80,7 @@
+@@ -79,6 +79,7 @@
  #include "chrome/browser/ui/ui_features.h"
  #include "chrome/browser/ui/user_education/browser_user_education_interface.h"
  #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -454,7 +473,7 @@
  #include "chrome/browser/ui/web_applications/web_app_dialog_utils.h"
  #include "chrome/browser/ui/web_applications/web_app_launch_utils.h"
  #include "chrome/browser/ui/web_applications/web_app_tabbed_utils.h"
-@@ -2507,6 +2508,10 @@ bool TabStripModel::IsContextMenuCommand
+@@ -2760,6 +2761,10 @@ bool TabStripModel::IsContextMenuCommandEnabled(
        return false;
      }
  
@@ -465,7 +484,7 @@
      case CommandCloseOtherTabs:
      case CommandCloseTabsToLeft:
      case CommandCloseTabsToRight: {
-@@ -2694,6 +2699,33 @@ void TabStripModel::ExecuteContextMenuCo
+@@ -2962,6 +2967,33 @@ void TabStripModel::ExecuteContextMenuCommand(int context_index,
        break;
      }
  
@@ -499,30 +518,9 @@
      case CommandCloseTab: {
        base::UmaHistogramCounts1000("Tab.ContextMenu.CloseTab.SelectedTabsCount",
                                     selection_model_.size());
---- a/chrome/browser/ui/tabs/tab_strip_model.h
-+++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -789,6 +789,7 @@ class TabStripModel {
-     CommandGlicSwitchToRecentConversation,
-     CommandGlicUnshare,
-     CommandDiscard,
-+    CommandRenameTab,
-     CommandLast
-   };
-   // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
---- a/components/sessions/content/content_serialized_navigation_builder.cc
-+++ b/components/sessions/content/content_serialized_navigation_builder.cc
-@@ -157,6 +157,11 @@ ContentSerializedNavigationBuilder::ToNa
-   entry->SetHttpStatusCode(navigation->http_status_code_);
-   entry->SetRedirectChain(navigation->redirect_chain_);
-   entry->SetVirtualURL(navigation->virtual_url_);
-+  if (navigation->favicon_url_.is_valid()) {
-+    content::FaviconStatus& favicon_status = entry->GetFavicon();
-+    favicon_status.valid = true;
-+    favicon_status.url = navigation->favicon_url_;
-+  }
-   sessions::NavigationTaskId* navigation_task_id =
-       sessions::NavigationTaskId::Get(entry.get());
-   navigation_task_id->set_id(navigation->task_id());
+diff --git a/chrome/browser/ui/views/helium/tab_rename_dialog.cc b/chrome/browser/ui/views/helium/tab_rename_dialog.cc
+new file mode 100644
+index 0000000..96f8f17
 --- /dev/null
 +++ b/chrome/browser/ui/views/helium/tab_rename_dialog.cc
 @@ -0,0 +1,71 @@
@@ -597,6 +595,9 @@
 +}
 +
 +}  // namespace helium
+diff --git a/chrome/browser/ui/views/helium/tab_rename_dialog.h b/chrome/browser/ui/views/helium/tab_rename_dialog.h
+new file mode 100644
+index 0000000..ebbe8ff
 --- /dev/null
 +++ b/chrome/browser/ui/views/helium/tab_rename_dialog.h
 @@ -0,0 +1,26 @@
@@ -626,3 +627,31 @@
 +}  // namespace helium
 +
 +#endif  // CHROME_BROWSER_UI_VIEWS_HELIUM_TAB_RENAME_DIALOG_H_
+diff --git a/components/sessions/content/content_serialized_navigation_builder.cc b/components/sessions/content/content_serialized_navigation_builder.cc
+index d6ec93a..5114687 100644
+--- a/components/sessions/content/content_serialized_navigation_builder.cc
++++ b/components/sessions/content/content_serialized_navigation_builder.cc
+@@ -185,6 +185,11 @@ ContentSerializedNavigationBuilder::ToNavigationEntry(
+   entry->SetHttpStatusCode(navigation->http_status_code_);
+   entry->SetRedirectChain(navigation->redirect_chain_);
+   entry->SetVirtualURL(navigation->virtual_url_);
++  if (navigation->favicon_url_.is_valid()) {
++    content::FaviconStatus& favicon_status = entry->GetFavicon();
++    favicon_status.valid = true;
++    favicon_status.url = navigation->favicon_url_;
++  }
+   sessions::NavigationTaskId* navigation_task_id =
+       sessions::NavigationTaskId::Get(entry.get());
+   navigation_task_id->set_id(navigation->task_id());
+diff --git a/components/tabs/public/tab_context_menu_command.h b/components/tabs/public/tab_context_menu_command.h
+index c084096..e2e4c0a 100644
+--- a/components/tabs/public/tab_context_menu_command.h
++++ b/components/tabs/public/tab_context_menu_command.h
+@@ -42,6 +42,7 @@ enum TabContextMenuCommand {
+   CommandToggleFocusGroup,
+   CommandDiscard,
+   CommandToggleTabMuted,
++  CommandRenameTab,
+ };
+ // LINT.ThenChange(//tools/metrics/histograms/metadata/tab/histograms.xml:TabContextMenuCommand)
+ 

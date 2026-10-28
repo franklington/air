@@ -2,94 +2,31 @@
 
 _root_dir=$(dirname $(greadlink -f $0))
 
-# source "~/.venvs/helium/bin/activate"
-source "$_root_dir/env.sh"
+source "$_root_dir/devutils/shared.sh"
 source "$_root_dir/devutils/set_quilt_vars.sh"
 
-___helium_setup_siso() {
-    if [ -x "$_siso_path" ]; then
-        return
-    fi
-
-    local siso_arch="mac-arm64"
-    if [[ $_arch == "x86_64" ]]; then
-        siso_arch="mac-amd64"
-    fi
-
-    local siso_package="build/siso/$siso_arch"
-
-    local siso_version=$(sed -n "s/.*'siso_version': '\([^']*\)'.*/\1/p" "$_src_dir/DEPS" | head -1)
-    if [ -z "$siso_version" ]; then
-        echo "error: couldn't find siso_version in DEPS" >&2
+___helium_setup_presetup() {
+    local download=true
+    if [ $# -eq 1 ] && [ "$1" = -c ]; then
+        download=false
+    elif [ $# -ne 0 ]; then
+        echo "usage: he setup|presetup [-c]" >&2
         return 1
     fi
 
-    mkdir -p "$_siso_dir"
-    printf '%s\n' "$siso_package $siso_version" |
-        "$_depot_tools_dir/cipd" ensure --root "$_siso_dir" --ensure-file -
-}
-
-___helium_setup_gn() {
-    local OUT_FILE="$_out_dir/args.gn"
-    cat "$_main_repo/flags.gn" "$_root_dir/flags.macos.gn" > "$OUT_FILE"
-
-    if command -v sccache 2>&1 >/dev/null; then
-        echo 'cc_wrapper="sccache"' >> "$OUT_FILE"
-    elif command -v ccache 2>&1 >/dev/null; then
-        echo 'cc_wrapper="env CCACHE_COMPILERCHECK=content CCACHE_SLOPPINESS=time_macros ccache"' >> "$OUT_FILE"
-    else
-        echo 'warn: sccache or ccache is not available' >&2
-    fi
-
-    local TARGET_CPU="arm64"
-    if [[ $_arch == "x86_64" ]]; then
-        TARGET_CPU="x64"
-    fi
-
-    echo 'target_cpu = "'"$TARGET_CPU"'"' >> "$OUT_FILE"
-    echo 'devtools_skip_typecheck = false' >> "$OUT_FILE"
-    echo 'use_siso = true' >> "$OUT_FILE"
-
-    sed -i '' s/is_official_build/is_component_build/ "$OUT_FILE"
-}
-
-___helium_info_pull() {
-    "$_root_dir/retrieve_and_unpack_resource.sh" -d -g
-
-    mkdir -p "$_out_dir"
-    cd "$_src_dir"
-}
-
-___helium_configure() {
-    cd "$_src_dir"
-    ___helium_setup_siso
-    python3 ./tools/gn/bootstrap/bootstrap.py -o "$_out_dir/gn" --skip-generate-buildfiles
-    "$_out_dir/gn" gen "$_out_dir" --fail-on-unused-args --export-compile-commands
-}
-
-___helium_toolchain() {
-    "$_root_dir/retrieve_and_unpack_resource.sh" -t
-}
-
-___helium_resources() {
-    python3 "$_main_repo/utils/generate_resources.py" "$_main_repo/resources/generate_resources.txt" "$_main_repo/resources"
-    python3 "$_main_repo/utils/replace_resources.py" "$_main_repo/resources/helium_resources.txt" "$_main_repo/resources" "$_src_dir"
-    python3 "$_main_repo/utils/replace_resources.py" "$_root_dir/resources/platform_resources.txt" "$_root_dir/resources" "$_src_dir"
-}
-
-___helium_setup_presetup() {
     if [ -d "$_src_dir/out" ]; then
         echo "$_src_dir/out already exists" >&2
         return
     fi
 
-    rm -rf "$_src_dir" && mkdir -p "$_download_cache" "$_src_dir"
+    rm -rf "$_src_dir" && mkdir -p "$_src_dir"
 
-    ___helium_info_pull
-    python3 "$_main_repo/utils/prune_binaries.py" "$_src_dir" "$_main_repo/pruning.list"
-    ___helium_toolchain
-    ___helium_resources
-    ___helium_setup_gn
+    fetch_sources "$download"
+    mkdir -p "$_out_dir"
+    cd "$_src_dir"
+    python3 "$_main_repo/utils/prune_binaries.py" --keep-build-dependencies "$_src_dir" "$_main_repo/pruning.list"
+    helium_resources
+    write_gn_args "$_arch" dev
 
     python3 "$_main_repo/utils/helium_version.py" \
         --tree "$_main_repo" \
@@ -98,14 +35,14 @@ ___helium_setup_presetup() {
 }
 
 ___helium_setup() {
-    ___helium_setup_presetup
+    ___helium_setup_presetup "$@"
 
     "$_root_dir/devutils/update_patches.sh" merge
 
     cd "$_src_dir"
     quilt push -a --refresh
 
-    ___helium_configure
+    gn_gen --export-compile-commands
 }
 
 ___helium_reset() {
@@ -172,8 +109,11 @@ ___helium_substitution() {
 
 ___helium_build() {
     cd "$_src_dir"
-    SISO_PATH="$_siso_path" python3 "$_depot_tools_dir/autoninja.py" \
-    -k 0 -C "$_out_dir" chrome chromedriver
+    if [ -n "${SISO_REAPI_ADDRESS:-}" ]; then
+        configure_siso || return
+        export RBE_service_no_security=true
+    fi
+    helium_build -k 0
 }
 
 ___helium_run() {
@@ -293,10 +233,10 @@ ___helium_lint() {
 __helium_menu() {
     set -e
     case $1 in
-        setup) ___helium_setup;;
-        presetup) ___helium_setup_presetup;;
-        configure) ___helium_configure;;
-        resources) ___helium_resources;;
+        setup) shift; ___helium_setup "$@";;
+        presetup) shift; ___helium_setup_presetup "$@";;
+        configure) gn_gen --export-compile-commands;;
+        resources) helium_resources;;
 
         sub|unsub) ___helium_substitution "$1";;
         namesub|nameunsub) ___helium_name_substitution "$1";;
@@ -319,9 +259,9 @@ __helium_menu() {
         reset) ___helium_reset;;
         *)
             echo "usage: he <command>" >&2
-            echo "\tsetup - sets up the dev environment fully for the first time" >&2
+            echo "\tsetup [-c] - sets up the dev environment, optionally cloning Chromium" >&2
             echo "\t         equivalent of: [presetup, merge, push, configure]" >&2
-            echo "\tpresetup - downloads sources, sets up GN, and prepares third-party dependencies" >&2
+            echo "\tpresetup [-c] - prepares sources and dependencies, optionally cloning Chromium" >&2
             echo "\tconfigure - generates build configuration and tools" >&2
             echo "\tresources - generates and copies Air resources (such as icons)" >&2
 
